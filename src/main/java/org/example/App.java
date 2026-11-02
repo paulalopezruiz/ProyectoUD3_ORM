@@ -1,20 +1,28 @@
 package org.example;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import org.example.dao.ProveedorDao;
+import org.example.models.Proveedor;
 
 public class App {
 
     public static void main(String[] args) {
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+        ProveedorDao proveedorDao = new ProveedorDao();
 
-        EntityManager em = emf.createEntityManager();
+        Proveedor proveedor = new Proveedor(
+                "PR001",
+                "Laura",
+                "García",
+                "Calle Paz 10, Vitoria");
 
-        System.out.println("Conexión con la base de datos realizada correctamente.");
+        proveedorDao.create(proveedor);
 
-        em.close();
-        emf.close();
+        System.out.println("Proveedor creado:");
+        System.out.println(proveedor);
+
+        Proveedor encontrado = proveedorDao.find("PR001");
+
+        System.out.println("Proveedor encontrado:");
+        System.out.println(encontrado);
     }
 }
