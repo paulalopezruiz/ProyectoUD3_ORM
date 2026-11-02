@@ -35,4 +35,24 @@ public class ProveedorDao extends Dao<Proveedor, String> {
                 Proveedor.class
         ).getResultList();
     }
+
+    public List<Proveedor> buscarPorApellidos(String apellidos) {
+        return em.createQuery(
+                        "SELECT p FROM Proveedor p WHERE LOWER(p.apellidos) LIKE LOWER(:apellidos)",
+                        Proveedor.class
+                )
+                .setParameter("apellidos", "%" + apellidos + "%")
+                .getResultList();
+    }
+
+    public List<Proveedor> buscarPorPieza(String codigoPieza) {
+        return em.createQuery(
+                        "SELECT DISTINCT p FROM Proveedor p " +
+                                "JOIN p.gestiones g " +
+                                "WHERE g.pieza.codigo = :codigo",
+                        Proveedor.class
+                )
+                .setParameter("codigo", codigoPieza)
+                .getResultList();
+    }
 }
