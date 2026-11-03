@@ -9,6 +9,8 @@ import org.example.models.Proyecto;
 import org.example.utils.AppLogger;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -65,6 +67,27 @@ public class Exportador {
         } catch (Exception e) {
             System.out.println("Error al exportar XML.");
             AppLogger.error("Error al exportar datos a XML.", e);
+        }
+    }
+
+    public void exportarInforme(String nombreArchivo, Map<String, Object> informe, boolean json) {
+        String extension = json ? "json" : "xml";
+        File archivo = new File("exports/" + nombreArchivo + "." + extension);
+
+        try {
+            Files.createDirectories(archivo.toPath().getParent());
+            if (json) {
+                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(archivo, informe);
+            } else {
+                new XmlMapper().writerWithDefaultPrettyPrinter().writeValue(archivo, informe);
+            }
+
+            System.out.println("Informe exportado correctamente.");
+            System.out.println("Archivo: " + archivo.getPath());
+            AppLogger.info("Informe exportado a " + extension.toUpperCase() + ": " + archivo.getPath());
+        } catch (IOException e) {
+            System.out.println("Error al exportar el informe.");
+            AppLogger.error("Error al exportar el informe " + nombreArchivo + " a " + extension + ".", e);
         }
     }
 

@@ -67,39 +67,34 @@ public class EstadisticasDao extends Dao<Gestion, Integer> {
         return ((Number) resultado).doubleValue();
     }
 
-    public Object[] proveedorMasActivo() {
-
-        List<Object[]> resultados = em.createQuery(
+    public List<Object[]> rankingProveedoresActivos() {
+        return em.createQuery(
                         "SELECT g.proveedor.codigo, g.proveedor.nombre, SUM(g.cantidad) " +
                                 "FROM Gestion g " +
                                 "GROUP BY g.proveedor.codigo, g.proveedor.nombre " +
-                                "ORDER BY SUM(g.cantidad) DESC",
+                                "ORDER BY SUM(g.cantidad) DESC, g.proveedor.codigo",
                         Object[].class)
-                .setMaxResults(1)
                 .getResultList();
-
-        if (resultados.isEmpty()) {
-            return null;
-        }
-        return resultados.get(0);
     }
 
-    public Object[] piezaMasUtilizada() {
-
-        List<Object[]> resultados = em.createQuery(
+    public List<Object[]> rankingPiezasUtilizadas() {
+        return em.createQuery(
                         "SELECT g.pieza.codigo, g.pieza.nombre, SUM(g.cantidad) " +
                                 "FROM Gestion g " +
                                 "GROUP BY g.pieza.codigo, g.pieza.nombre " +
-                                "ORDER BY SUM(g.cantidad) DESC",
+                                "ORDER BY SUM(g.cantidad) DESC, g.pieza.codigo",
                         Object[].class)
-                .setMaxResults(1)
                 .getResultList();
+    }
 
-        if (resultados.isEmpty()) {
-            return null;
-        }
-
-        return resultados.get(0);
+    public List<Gestion> gestionesProyecto(String codigoProyecto) {
+        return em.createQuery(
+                        "SELECT g FROM Gestion g " +
+                                "WHERE g.proyecto.codigo = :codigo " +
+                                "ORDER BY g.proveedor.codigo, g.pieza.codigo",
+                        Gestion.class)
+                .setParameter("codigo", codigoProyecto)
+                .getResultList();
     }
 
     public long totalProveedores() {
