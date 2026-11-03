@@ -1,6 +1,8 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class Proyecto {
     @Column(nullable = false)
     private String ciudad;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "proyecto")
     private List<Gestion> gestiones = new ArrayList<>();
 

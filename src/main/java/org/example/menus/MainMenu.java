@@ -20,7 +20,8 @@ public class MainMenu {
             System.out.println("3. Gestión de proyectos");
             System.out.println("4. Gestión de suministros");
             System.out.println("5. Estadísticas");
-            System.out.println("6. Ayuda");
+            System.out.println("6. Exportaciones");
+            System.out.println("7. Ayuda");
             System.out.println("0. Salir");
             System.out.println("--------------------------------");
             System.out.print("Selecciona una opción: ");
@@ -51,6 +52,10 @@ public class MainMenu {
                         break;
 
                     case 6:
+                        new ExportMenu().mostrar();
+                        break;
+
+                    case 7:
                         mostrarAyuda();
                         break;
 
@@ -73,17 +78,12 @@ public class MainMenu {
 
         System.out.println();
         System.out.println("| AYUDA |");
-
         System.out.println("1. Proveedores: altas, bajas, modificaciones y búsquedas.");
-
         System.out.println("2. Piezas: altas, bajas, modificaciones y búsquedas.");
-
         System.out.println("3. Proyectos: altas, bajas, modificaciones y búsquedas.");
-
         System.out.println("4. Suministros: relaciona proveedores, piezas y proyectos.");
-
-        System.out.println("5. Estadísticas: históricos, análisis y estadísticas globales.");
-
+        System.out.println("5. Estadísticas: históricos y análisis.");
+        System.out.println("6. Exportaciones: genera archivos JSON y XML.");
         System.out.println("0. Salir de la aplicación.");
     }
 }

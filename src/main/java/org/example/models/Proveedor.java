@@ -1,6 +1,8 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class Proveedor {
     @Column(name = "direccion_postal", nullable = false)
     private String direccionPostal;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "proveedor")
     private List<Gestion> gestiones = new ArrayList<>();
 
