@@ -112,7 +112,7 @@ public class ProveedorMenu {
 
         } catch (Exception e) {
             System.out.println("Error al crear el proveedor.");
-            AppLogger.error("Error al crear proveedor " + codigo + ": " + e.getMessage());
+            AppLogger.error("Error al crear proveedor " + codigo, e);
         }
     }
 
@@ -141,7 +141,7 @@ public class ProveedorMenu {
             System.out.println("No se puede eliminar el proveedor.");
             System.out.println("Puede tener suministros asociados.");
 
-            AppLogger.error("Error al eliminar proveedor " + codigo + ": " + e.getMessage());
+            AppLogger.error("Error al eliminar proveedor " + codigo, e);
         }
     }
 
@@ -181,7 +181,7 @@ public class ProveedorMenu {
 
         } catch (Exception e) {
             System.out.println("Error al modificar el proveedor.");
-            AppLogger.error("Error al modificar proveedor " + codigo + ": " + e.getMessage());
+            AppLogger.error("Error al modificar proveedor " + codigo, e);
         }
     }
 

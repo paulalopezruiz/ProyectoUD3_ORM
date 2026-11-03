@@ -125,7 +125,7 @@ public class PiezaMenu {
 
         } catch (Exception e) {
             System.out.println("Error al crear la pieza.");
-            AppLogger.error("Error al crear pieza " + codigo + ": " + e.getMessage());
+            AppLogger.error("Error al crear pieza " + codigo, e);
         }
     }
 
@@ -154,7 +154,7 @@ public class PiezaMenu {
             System.out.println("No se puede eliminar la pieza.");
             System.out.println("Puede tener suministros asociados.");
 
-            AppLogger.error("Error al eliminar pieza " + codigo + ": " + e.getMessage());
+            AppLogger.error("Error al eliminar pieza " + codigo, e);
         }
     }
 
@@ -207,7 +207,7 @@ public class PiezaMenu {
 
         } catch (Exception e) {
             System.out.println("Error al modificar la pieza.");
-            AppLogger.error("Error al modificar pieza " + codigo + ": " + e.getMessage());
+            AppLogger.error("Error al modificar pieza " + codigo, e);
         }
     }
 
