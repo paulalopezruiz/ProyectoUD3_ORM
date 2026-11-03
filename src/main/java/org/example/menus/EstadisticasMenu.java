@@ -7,6 +7,7 @@ import org.example.export.Exportador;
 import org.example.models.Gestion;
 import org.example.models.Proveedor;
 import org.example.models.Proyecto;
+import org.example.utils.EntradaConsola;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -18,7 +19,7 @@ import java.util.Scanner;
 
 public class EstadisticasMenu {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = EntradaConsola.scanner();
 
     private final EstadisticasDao estadisticasDao = new EstadisticasDao();
     private final ProveedorDao proveedorDao = new ProveedorDao();

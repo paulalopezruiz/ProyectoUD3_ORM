@@ -1,10 +1,12 @@
 package org.example.menus;
 
+import org.example.utils.EntradaConsola;
+
 import java.util.Scanner;
 
 public class MainMenu {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = EntradaConsola.scanner();
 
     public void mostrar() {
 

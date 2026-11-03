@@ -3,13 +3,14 @@ package org.example.menus;
 import org.example.dao.PiezaDao;
 import org.example.models.Pieza;
 import org.example.utils.AppLogger;
+import org.example.utils.EntradaConsola;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class PiezaMenu {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = EntradaConsola.scanner();
     private final PiezaDao piezaDao = new PiezaDao();
 
     public void mostrar() {
@@ -195,12 +196,13 @@ public class PiezaMenu {
         System.out.print("Nueva descripción: ");
         String descripcion = scanner.nextLine();
 
+        String estadoAnterior = pieza.toString();
         pieza.setNombre(nombre);
         pieza.setPrecio(precio);
         pieza.setDescripcion(descripcion);
 
         try {
-            piezaDao.update(pieza);
+            piezaDao.update(pieza, estadoAnterior);
 
             System.out.println("Pieza modificada correctamente.");
             AppLogger.info("Pieza modificada: " + codigo);

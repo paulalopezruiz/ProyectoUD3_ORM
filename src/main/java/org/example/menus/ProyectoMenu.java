@@ -3,13 +3,14 @@ package org.example.menus;
 import org.example.dao.ProyectoDao;
 import org.example.models.Proyecto;
 import org.example.utils.AppLogger;
+import org.example.utils.EntradaConsola;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class ProyectoMenu {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = EntradaConsola.scanner();
     private final ProyectoDao proyectoDao = new ProyectoDao();
 
     public void mostrar() {
@@ -163,11 +164,12 @@ public class ProyectoMenu {
         System.out.print("Nueva ciudad: ");
         String ciudad = scanner.nextLine();
 
+        String estadoAnterior = proyecto.toString();
         proyecto.setNombre(nombre);
         proyecto.setCiudad(ciudad);
 
         try {
-            proyectoDao.update(proyecto);
+            proyectoDao.update(proyecto, estadoAnterior);
 
             System.out.println("Proyecto modificado correctamente.");
             AppLogger.info("Proyecto modificado: " + codigo);

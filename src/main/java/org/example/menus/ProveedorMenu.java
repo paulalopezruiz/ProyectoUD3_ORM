@@ -3,13 +3,14 @@ package org.example.menus;
 import org.example.dao.ProveedorDao;
 import org.example.models.Proveedor;
 import org.example.utils.AppLogger;
+import org.example.utils.EntradaConsola;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class ProveedorMenu {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = EntradaConsola.scanner();
     private final ProveedorDao proveedorDao = new ProveedorDao();
 
     public void mostrar() {
@@ -169,12 +170,13 @@ public class ProveedorMenu {
         System.out.print("Nueva dirección postal: ");
         String direccion = scanner.nextLine();
 
+        String estadoAnterior = proveedor.toString();
         proveedor.setNombre(nombre);
         proveedor.setApellidos(apellidos);
         proveedor.setDireccionPostal(direccion);
 
         try {
-            proveedorDao.update(proveedor);
+            proveedorDao.update(proveedor, estadoAnterior);
 
             System.out.println("Proveedor modificado correctamente.");
             AppLogger.info("Proveedor modificado: " + codigo);

@@ -18,6 +18,10 @@ public class AppLogger {
         logger.info(mensaje);
     }
 
+    public static void warn(String mensaje) {
+        logger.warn(mensaje);
+    }
+
     public static void error(String mensaje) {
         logger.error(mensaje);
     }

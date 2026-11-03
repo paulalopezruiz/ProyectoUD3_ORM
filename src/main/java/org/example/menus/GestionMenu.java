@@ -9,6 +9,7 @@ import org.example.models.Pieza;
 import org.example.models.Proveedor;
 import org.example.models.Proyecto;
 import org.example.utils.AppLogger;
+import org.example.utils.EntradaConsola;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -17,7 +18,7 @@ import java.util.Scanner;
 
 public class GestionMenu {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = EntradaConsola.scanner();
 
     private final GestionDao gestionDao = new GestionDao();
     private final ProveedorDao proveedorDao = new ProveedorDao();
@@ -296,6 +297,7 @@ public class GestionMenu {
             return;
         }
 
+        String estadoAnterior = gestion.toString();
         gestion.setProveedor(proveedor);
         gestion.setPieza(pieza);
         gestion.setProyecto(proyecto);
@@ -303,7 +305,7 @@ public class GestionMenu {
         gestion.setCantidad(cantidad);
 
         try {
-            gestionDao.update(gestion);
+            gestionDao.update(gestion, estadoAnterior);
 
             System.out.println("Suministro modificado correctamente.");
             AppLogger.info("Suministro modificado. ID: " + id);

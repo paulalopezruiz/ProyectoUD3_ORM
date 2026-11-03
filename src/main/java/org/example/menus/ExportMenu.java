@@ -5,12 +5,13 @@ import org.example.dao.PiezaDao;
 import org.example.dao.ProveedorDao;
 import org.example.dao.ProyectoDao;
 import org.example.export.Exportador;
+import org.example.utils.EntradaConsola;
 
 import java.util.Scanner;
 
 public class ExportMenu {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = EntradaConsola.scanner();
 
     private final ProveedorDao proveedorDao = new ProveedorDao();
     private final PiezaDao piezaDao = new PiezaDao();
