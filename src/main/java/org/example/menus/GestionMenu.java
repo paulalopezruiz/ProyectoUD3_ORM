@@ -5,11 +5,13 @@ import org.example.dao.PiezaDao;
 import org.example.dao.ProveedorDao;
 import org.example.dao.ProyectoDao;
 import org.example.models.Gestion;
+import org.example.models.EstadoProyecto;
 import org.example.models.Pieza;
 import org.example.models.Proveedor;
 import org.example.models.Proyecto;
 import org.example.utils.AppLogger;
 import org.example.utils.EntradaConsola;
+import org.example.utils.Validaciones;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -93,8 +95,7 @@ public class GestionMenu {
         System.out.println();
         System.out.println("| ALTA DE SUMINISTRO |");
 
-        System.out.print("Código del proveedor: ");
-        String codigoProveedor = scanner.nextLine();
+        String codigoProveedor = Validaciones.leerObligatorio(scanner, "Código del proveedor: ");
 
         Proveedor proveedor =
                 proveedorDao.find(codigoProveedor);
@@ -104,8 +105,7 @@ public class GestionMenu {
             return;
         }
 
-        System.out.print("Código de la pieza: ");
-        String codigoPieza = scanner.nextLine();
+        String codigoPieza = Validaciones.leerObligatorio(scanner, "Código de la pieza: ");
 
         Pieza pieza =
                 piezaDao.find(codigoPieza);
@@ -115,8 +115,7 @@ public class GestionMenu {
             return;
         }
 
-        System.out.print("Código del proyecto: ");
-        String codigoProyecto = scanner.nextLine();
+        String codigoProyecto = Validaciones.leerObligatorio(scanner, "Código del proyecto: ");
 
         Proyecto proyecto =
                 proyectoDao.find(codigoProyecto);
@@ -126,32 +125,13 @@ public class GestionMenu {
             return;
         }
 
-        LocalDate fecha;
-
-        try {
-            System.out.print("Fecha (AAAA-MM-DD): ");
-            fecha = LocalDate.parse(scanner.nextLine());
-
-        } catch (DateTimeParseException e) {
-            System.out.println("Formato de fecha incorrecto.");
+        if (proyecto.getEstado() == EstadoProyecto.FINALIZADO) {
+            System.out.println("No se pueden añadir suministros a un proyecto finalizado.");
             return;
         }
 
-        int cantidad;
-
-        try {
-            System.out.print("Cantidad: ");
-            cantidad = Integer.parseInt(scanner.nextLine());
-
-            if (cantidad <= 0) {
-                System.out.println("La cantidad debe ser mayor que 0.");
-                return;
-            }
-
-        } catch (NumberFormatException e) {
-            System.out.println("La cantidad debe ser un número entero.");
-            return;
-        }
+        LocalDate fecha = Validaciones.leerFecha(scanner, "Fecha (AAAA-MM-DD): ");
+        int cantidad = Validaciones.leerCantidad(scanner, "Cantidad: ");
 
         Gestion gestion =
                 new Gestion(
@@ -202,6 +182,11 @@ public class GestionMenu {
             return;
         }
 
+        if (!Validaciones.confirmar(scanner, "eliminar el suministro " + id)) {
+            System.out.println("Eliminación cancelada.");
+            return;
+        }
+
         try {
             gestionDao.delete(gestion);
 
@@ -237,8 +222,7 @@ public class GestionMenu {
             return;
         }
 
-        System.out.print("Código del proveedor: ");
-        String codigoProveedor = scanner.nextLine();
+        String codigoProveedor = Validaciones.leerObligatorio(scanner, "Código del proveedor: ");
 
         Proveedor proveedor =
                 proveedorDao.find(codigoProveedor);
@@ -248,8 +232,7 @@ public class GestionMenu {
             return;
         }
 
-        System.out.print("Código de la pieza: ");
-        String codigoPieza = scanner.nextLine();
+        String codigoPieza = Validaciones.leerObligatorio(scanner, "Código de la pieza: ");
 
         Pieza pieza =
                 piezaDao.find(codigoPieza);
@@ -259,8 +242,7 @@ public class GestionMenu {
             return;
         }
 
-        System.out.print("Código del proyecto: ");
-        String codigoProyecto = scanner.nextLine();
+        String codigoProyecto = Validaciones.leerObligatorio(scanner, "Código del proyecto: ");
 
         Proyecto proyecto =
                 proyectoDao.find(codigoProyecto);
@@ -270,32 +252,13 @@ public class GestionMenu {
             return;
         }
 
-        LocalDate fecha;
-
-        try {
-            System.out.print("Nueva fecha (AAAA-MM-DD): ");
-            fecha = LocalDate.parse(scanner.nextLine());
-
-        } catch (DateTimeParseException e) {
-            System.out.println("Formato de fecha incorrecto.");
+        if (proyecto.getEstado() == EstadoProyecto.FINALIZADO) {
+            System.out.println("No se pueden asignar suministros a un proyecto finalizado.");
             return;
         }
 
-        int cantidad;
-
-        try {
-            System.out.print("Nueva cantidad: ");
-            cantidad = Integer.parseInt(scanner.nextLine());
-
-            if (cantidad <= 0) {
-                System.out.println("La cantidad debe ser mayor que 0.");
-                return;
-            }
-
-        } catch (NumberFormatException e) {
-            System.out.println("La cantidad debe ser un número entero.");
-            return;
-        }
+        LocalDate fecha = Validaciones.leerFecha(scanner, "Nueva fecha (AAAA-MM-DD): ");
+        int cantidad = Validaciones.leerCantidad(scanner, "Nueva cantidad: ");
 
         String estadoAnterior = gestion.toString();
         gestion.setProveedor(proveedor);

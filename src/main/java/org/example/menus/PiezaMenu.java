@@ -4,6 +4,7 @@ import org.example.dao.PiezaDao;
 import org.example.models.Pieza;
 import org.example.utils.AppLogger;
 import org.example.utils.EntradaConsola;
+import org.example.utils.Validaciones;
 
 import java.util.List;
 import java.util.Scanner;
@@ -85,35 +86,18 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| ALTA DE PIEZA |");
 
-        System.out.print("Código: ");
-        String codigo = scanner.nextLine();
+        String codigo = Validaciones.leerObligatorio(scanner, "Código: ");
 
         if (piezaDao.find(codigo) != null) {
             System.out.println("Ya existe una pieza con ese código.");
             return;
         }
 
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
-
-        double precio;
-
-        try {
-            System.out.print("Precio: ");
-            precio = Double.parseDouble(scanner.nextLine());
-
-            if (precio < 0) {
-                System.out.println("El precio no puede ser negativo.");
-                return;
-            }
-
-        } catch (NumberFormatException e) {
-            System.out.println("El precio debe ser un número.");
-            return;
-        }
+        String nombre = Validaciones.leerObligatorio(scanner, "Nombre: ");
+        double precio = Validaciones.leerPrecio(scanner, "Precio: ");
 
         System.out.print("Descripción: ");
-        String descripcion = scanner.nextLine();
+        String descripcion = scanner.nextLine().trim();
 
         Pieza pieza =
                 new Pieza(codigo, nombre, precio, descripcion);
@@ -142,6 +126,11 @@ public class PiezaMenu {
 
         if (pieza == null) {
             System.out.println("Pieza no encontrada.");
+            return;
+        }
+
+        if (!Validaciones.confirmar(scanner, "eliminar la pieza " + codigo)) {
+            System.out.println("Eliminación cancelada.");
             return;
         }
 
@@ -174,27 +163,10 @@ public class PiezaMenu {
             return;
         }
 
-        System.out.print("Nuevo nombre: ");
-        String nombre = scanner.nextLine();
-
-        double precio;
-
-        try {
-            System.out.print("Nuevo precio: ");
-            precio = Double.parseDouble(scanner.nextLine());
-
-            if (precio < 0) {
-                System.out.println("El precio no puede ser negativo.");
-                return;
-            }
-
-        } catch (NumberFormatException e) {
-            System.out.println("El precio debe ser un número.");
-            return;
-        }
-
+        String nombre = Validaciones.leerObligatorio(scanner, "Nuevo nombre: ");
+        double precio = Validaciones.leerPrecio(scanner, "Nuevo precio: ");
         System.out.print("Nueva descripción: ");
-        String descripcion = scanner.nextLine();
+        String descripcion = scanner.nextLine().trim();
 
         String estadoAnterior = pieza.toString();
         pieza.setNombre(nombre);
@@ -248,25 +220,18 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| BUSCAR POR PRECIO |");
 
-        try {
-            System.out.print("Precio mínimo: ");
-            double minimo = Double.parseDouble(scanner.nextLine());
-
-            System.out.print("Precio máximo: ");
-            double maximo = Double.parseDouble(scanner.nextLine());
-
-            if (minimo < 0 || maximo < minimo) {
-                System.out.println("Intervalo de precios incorrecto.");
-                return;
+        double minimo = Validaciones.leerPrecio(scanner, "Precio mínimo: ");
+        double maximo;
+        do {
+            maximo = Validaciones.leerPrecio(scanner, "Precio máximo: ");
+            if (maximo < minimo) {
+                System.out.println("El precio máximo debe ser igual o mayor que el mínimo.");
             }
+        } while (maximo < minimo);
 
-            mostrarPiezas(
-                    piezaDao.buscarPorRangoPrecio(minimo, maximo)
-            );
-
-        } catch (NumberFormatException e) {
-            System.out.println("Los precios deben ser números.");
-        }
+        mostrarPiezas(
+                piezaDao.buscarPorRangoPrecio(minimo, maximo)
+        );
     }
 
     private void buscarPorProveedor() {

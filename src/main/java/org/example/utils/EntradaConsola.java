@@ -14,6 +14,11 @@ public final class EntradaConsola {
         return SCANNER;
     }
 
+    public static String leerLinea(Scanner scanner) {
+        Console consola = System.console();
+        return consola == null ? scanner.nextLine() : consola.readLine();
+    }
+
     public static char[] leerContrasena(String mensaje) {
         Console consola = System.console();
         if (consola != null) {

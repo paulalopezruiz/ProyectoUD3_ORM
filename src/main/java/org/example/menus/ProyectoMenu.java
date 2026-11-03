@@ -4,6 +4,7 @@ import org.example.dao.ProyectoDao;
 import org.example.models.Proyecto;
 import org.example.utils.AppLogger;
 import org.example.utils.EntradaConsola;
+import org.example.utils.Validaciones;
 
 import java.util.List;
 import java.util.Scanner;
@@ -85,22 +86,19 @@ public class ProyectoMenu {
         System.out.println();
         System.out.println("| ALTA DE PROYECTO |");
 
-        System.out.print("Código: ");
-        String codigo = scanner.nextLine();
+        String codigo = Validaciones.leerObligatorio(scanner, "Código: ");
 
         if (proyectoDao.find(codigo) != null) {
             System.out.println("Ya existe un proyecto con ese código.");
             return;
         }
 
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
-
-        System.out.print("Ciudad: ");
-        String ciudad = scanner.nextLine();
+        String nombre = Validaciones.leerObligatorio(scanner, "Nombre: ");
+        String ciudad = Validaciones.leerObligatorio(scanner, "Ciudad: ");
 
         Proyecto proyecto =
                 new Proyecto(codigo, nombre, ciudad);
+        proyecto.setEstado(Validaciones.leerEstadoProyecto(scanner));
 
         try {
             proyectoDao.create(proyecto);
@@ -126,6 +124,11 @@ public class ProyectoMenu {
 
         if (proyecto == null) {
             System.out.println("Proyecto no encontrado.");
+            return;
+        }
+
+        if (!Validaciones.confirmar(scanner, "eliminar el proyecto " + codigo)) {
+            System.out.println("Eliminación cancelada.");
             return;
         }
 
@@ -158,15 +161,14 @@ public class ProyectoMenu {
             return;
         }
 
-        System.out.print("Nuevo nombre: ");
-        String nombre = scanner.nextLine();
-
-        System.out.print("Nueva ciudad: ");
-        String ciudad = scanner.nextLine();
+        String nombre = Validaciones.leerObligatorio(scanner, "Nuevo nombre: ");
+        String ciudad = Validaciones.leerObligatorio(scanner, "Nueva ciudad: ");
+        var estado = Validaciones.leerEstadoProyecto(scanner);
 
         String estadoAnterior = proyecto.toString();
         proyecto.setNombre(nombre);
         proyecto.setCiudad(ciudad);
+        proyecto.setEstado(estado);
 
         try {
             proyectoDao.update(proyecto, estadoAnterior);

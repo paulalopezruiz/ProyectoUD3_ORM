@@ -20,6 +20,10 @@ public class Proyecto {
     @Column(nullable = false)
     private String ciudad;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private EstadoProyecto estado = EstadoProyecto.PENDIENTE;
+
     @JsonIgnore
     @OneToMany(mappedBy = "proyecto")
     private List<Gestion> gestiones = new ArrayList<>();
@@ -57,6 +61,17 @@ public class Proyecto {
         this.ciudad = ciudad;
     }
 
+    public EstadoProyecto getEstado() {
+        return estado == null ? EstadoProyecto.PENDIENTE : estado;
+    }
+
+    public void setEstado(EstadoProyecto estado) {
+        if (estado == null) {
+            throw new IllegalArgumentException("El estado del proyecto es obligatorio.");
+        }
+        this.estado = estado;
+    }
+
     public List<Gestion> getGestiones() {
         return gestiones;
     }
@@ -71,6 +86,7 @@ public class Proyecto {
                 "codigo='" + codigo + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", ciudad='" + ciudad + '\'' +
+                ", estado='" + getEstado() + '\'' +
                 '}';
     }
 }

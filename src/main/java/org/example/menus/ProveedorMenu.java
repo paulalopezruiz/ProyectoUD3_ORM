@@ -4,6 +4,7 @@ import org.example.dao.ProveedorDao;
 import org.example.models.Proveedor;
 import org.example.utils.AppLogger;
 import org.example.utils.EntradaConsola;
+import org.example.utils.Validaciones;
 
 import java.util.List;
 import java.util.Scanner;
@@ -85,22 +86,16 @@ public class ProveedorMenu {
         System.out.println();
         System.out.println("| ALTA DE PROVEEDOR |");
 
-        System.out.print("Código: ");
-        String codigo = scanner.nextLine();
+        String codigo = Validaciones.leerObligatorio(scanner, "Código: ");
 
         if (proveedorDao.find(codigo) != null) {
             System.out.println("Ya existe un proveedor con ese código.");
             return;
         }
 
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
-
-        System.out.print("Apellidos: ");
-        String apellidos = scanner.nextLine();
-
-        System.out.print("Dirección postal: ");
-        String direccion = scanner.nextLine();
+        String nombre = Validaciones.leerObligatorio(scanner, "Nombre: ");
+        String apellidos = Validaciones.leerObligatorio(scanner, "Apellidos: ");
+        String direccion = Validaciones.leerObligatorio(scanner, "Dirección postal: ");
 
         Proveedor proveedor =
                 new Proveedor(codigo, nombre, apellidos, direccion);
@@ -129,6 +124,11 @@ public class ProveedorMenu {
 
         if (proveedor == null) {
             System.out.println("Proveedor no encontrado.");
+            return;
+        }
+
+        if (!Validaciones.confirmar(scanner, "eliminar el proveedor " + codigo)) {
+            System.out.println("Eliminación cancelada.");
             return;
         }
 
@@ -161,14 +161,9 @@ public class ProveedorMenu {
             return;
         }
 
-        System.out.print("Nuevo nombre: ");
-        String nombre = scanner.nextLine();
-
-        System.out.print("Nuevos apellidos: ");
-        String apellidos = scanner.nextLine();
-
-        System.out.print("Nueva dirección postal: ");
-        String direccion = scanner.nextLine();
+        String nombre = Validaciones.leerObligatorio(scanner, "Nuevo nombre: ");
+        String apellidos = Validaciones.leerObligatorio(scanner, "Nuevos apellidos: ");
+        String direccion = Validaciones.leerObligatorio(scanner, "Nueva dirección postal: ");
 
         String estadoAnterior = proveedor.toString();
         proveedor.setNombre(nombre);

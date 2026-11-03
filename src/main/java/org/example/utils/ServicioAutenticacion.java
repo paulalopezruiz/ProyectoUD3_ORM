@@ -32,7 +32,7 @@ public class ServicioAutenticacion {
 
             for (int intento = 1; intento <= MAX_INTENTOS; intento++) {
                 System.out.print("Usuario: ");
-                String nombreUsuario = scanner.nextLine().trim();
+                String nombreUsuario = EntradaConsola.leerLinea(scanner).trim();
                 char[] contrasena = EntradaConsola.leerContrasena("Contraseña: ");
 
                 Usuario usuario = em.find(Usuario.class, nombreUsuario);
@@ -82,7 +82,7 @@ public class ServicioAutenticacion {
     private Usuario registrarPrimerUsuario(EntityManager em) {
         System.out.println("No hay usuarios registrados. Crea la cuenta inicial.");
         System.out.print("Nuevo usuario (deja vacío para salir): ");
-        String nombreUsuario = scanner.nextLine().trim();
+        String nombreUsuario = EntradaConsola.leerLinea(scanner).trim();
         if (nombreUsuario.isBlank()) {
             return null;
         }
