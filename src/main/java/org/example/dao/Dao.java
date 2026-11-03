@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 
-public abstract class Dao<T, K> {
+public abstract class Dao<T, K> implements AutoCloseable {
 
     private static final EntityManagerFactory emf = Persistencia.factory();
 
@@ -19,6 +19,13 @@ public abstract class Dao<T, K> {
 
     public EntityManager getEntityManager() {
         return em;
+    }
+
+    @Override
+    public void close() {
+        if (em.isOpen()) {
+            em.close();
+        }
     }
 
     public abstract T find(K id);

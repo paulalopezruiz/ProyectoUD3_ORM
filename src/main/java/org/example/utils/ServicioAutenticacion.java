@@ -58,6 +58,21 @@ public class ServicioAutenticacion {
         }
     }
 
+    public SesionAutenticada autenticar(String nombreUsuario, char[] contrasena) {
+        EntityManager em = Persistencia.crearEntityManager();
+        try {
+            Usuario usuario = em.find(Usuario.class, nombreUsuario);
+            if (usuario == null || !PasswordHasher.verify(contrasena, usuario.getHashContrasena())) {
+                AppLogger.warn("Intento de acceso web fallido para el usuario: " + nombreUsuario);
+                return null;
+            }
+            return crearSesion(em, usuario.getNombreUsuario());
+        } finally {
+            java.util.Arrays.fill(contrasena, '\0');
+            em.close();
+        }
+    }
+
     public void cerrarSesion(Long idRegistroAcceso) {
         EntityManager em = Persistencia.crearEntityManager();
         EntityTransaction transaction = em.getTransaction();
