@@ -6,6 +6,7 @@ import org.example.models.Gestion;
 import org.example.models.Pieza;
 import org.example.models.Proveedor;
 import org.example.models.Proyecto;
+import org.example.utils.AppLogger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,9 +34,11 @@ public class Exportador {
 
             System.out.println("JSON exportado correctamente.");
             System.out.println("Archivo: exports/datos.json");
+            AppLogger.info("Exportación JSON completada: exports/datos.json");
 
         } catch (Exception e) {
             System.out.println("Error al exportar JSON.");
+            AppLogger.error("Error al exportar datos a JSON.", e);
         }
     }
 
@@ -57,9 +60,11 @@ public class Exportador {
 
             System.out.println("XML exportado correctamente.");
             System.out.println("Archivo: exports/datos.xml");
+            AppLogger.info("Exportación XML completada: exports/datos.xml");
 
         } catch (Exception e) {
             System.out.println("Error al exportar XML.");
+            AppLogger.error("Error al exportar datos a XML.", e);
         }
     }
 

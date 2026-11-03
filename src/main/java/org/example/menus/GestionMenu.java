@@ -176,8 +176,8 @@ public class GestionMenu {
             System.out.println("Error al crear el suministro.");
 
             AppLogger.error(
-                    "Error al crear suministro: " +
-                            e.getMessage()
+                    "Error al crear suministro",
+                    e
             );
         }
     }
@@ -211,8 +211,8 @@ public class GestionMenu {
             System.out.println("Error al eliminar el suministro.");
 
             AppLogger.error(
-                    "Error al eliminar suministro " +
-                            id + ": " + e.getMessage()
+                    "Error al eliminar suministro " + id,
+                    e
             );
         }
     }
@@ -312,8 +312,8 @@ public class GestionMenu {
             System.out.println("Error al modificar el suministro.");
 
             AppLogger.error(
-                    "Error al modificar suministro " +
-                            id + ": " + e.getMessage()
+                    "Error al modificar suministro " + id,
+                    e
             );
         }
     }

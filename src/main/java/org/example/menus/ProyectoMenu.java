@@ -109,7 +109,7 @@ public class ProyectoMenu {
 
         } catch (Exception e) {
             System.out.println("Error al crear el proyecto.");
-            AppLogger.error("Error al crear proyecto " + codigo + ": " + e.getMessage());
+            AppLogger.error("Error al crear proyecto " + codigo, e);
         }
     }
 
@@ -138,7 +138,7 @@ public class ProyectoMenu {
             System.out.println("No se puede eliminar el proyecto.");
             System.out.println("Puede tener suministros asociados.");
 
-            AppLogger.error("Error al eliminar proyecto " + codigo + ": " + e.getMessage());
+            AppLogger.error("Error al eliminar proyecto " + codigo, e);
         }
     }
 
@@ -174,7 +174,7 @@ public class ProyectoMenu {
 
         } catch (Exception e) {
             System.out.println("Error al modificar el proyecto.");
-            AppLogger.error("Error al modificar proyecto " + codigo + ": " + e.getMessage());
+            AppLogger.error("Error al modificar proyecto " + codigo, e);
         }
     }
 

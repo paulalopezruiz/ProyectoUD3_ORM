@@ -21,4 +21,8 @@ public class AppLogger {
     public static void error(String mensaje) {
         logger.error(mensaje);
     }
+
+    public static void error(String mensaje, Throwable excepcion) {
+        logger.error(mensaje, excepcion);
+    }
 }
