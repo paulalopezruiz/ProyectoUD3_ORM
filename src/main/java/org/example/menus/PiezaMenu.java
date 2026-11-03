@@ -2,6 +2,7 @@ package org.example.menus;
 
 import org.example.dao.PiezaDao;
 import org.example.models.Pieza;
+import org.example.utils.AppLogger;
 
 import java.util.List;
 import java.util.Scanner;
@@ -113,13 +114,18 @@ public class PiezaMenu {
         System.out.print("Descripción: ");
         String descripcion = scanner.nextLine();
 
-        Pieza pieza = new Pieza(codigo, nombre, precio, descripcion);
+        Pieza pieza =
+                new Pieza(codigo, nombre, precio, descripcion);
 
         try {
             piezaDao.create(pieza);
+
             System.out.println("Pieza creada correctamente.");
+            AppLogger.info("Pieza creada: " + codigo);
+
         } catch (Exception e) {
             System.out.println("Error al crear la pieza.");
+            AppLogger.error("Error al crear pieza " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -140,10 +146,15 @@ public class PiezaMenu {
 
         try {
             piezaDao.delete(pieza);
+
             System.out.println("Pieza eliminada correctamente.");
+            AppLogger.info("Pieza eliminada: " + codigo);
+
         } catch (Exception e) {
             System.out.println("No se puede eliminar la pieza.");
             System.out.println("Puede tener suministros asociados.");
+
+            AppLogger.error("Error al eliminar pieza " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -190,9 +201,13 @@ public class PiezaMenu {
 
         try {
             piezaDao.update(pieza);
+
             System.out.println("Pieza modificada correctamente.");
+            AppLogger.info("Pieza modificada: " + codigo);
+
         } catch (Exception e) {
             System.out.println("Error al modificar la pieza.");
+            AppLogger.error("Error al modificar pieza " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -221,31 +236,9 @@ public class PiezaMenu {
         System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
 
-        List<Pieza> piezas = piezaDao.buscarPorNombre(nombre);
-
-        if (piezas.isEmpty()) {
-            System.out.println("No se han encontrado piezas.");
-        } else {
-            for (Pieza pieza : piezas) {
-                System.out.println(pieza);
-            }
-        }
-    }
-
-    private void listarTodas() {
-
-        System.out.println();
-        System.out.println("| LISTADO DE PIEZAS |");
-
-        List<Pieza> piezas = piezaDao.listarTodos();
-
-        if (piezas.isEmpty()) {
-            System.out.println("No hay piezas.");
-        } else {
-            for (Pieza pieza : piezas) {
-                System.out.println(pieza);
-            }
-        }
+        mostrarPiezas(
+                piezaDao.buscarPorNombre(nombre)
+        );
     }
 
     private void buscarPorPrecio() {
@@ -265,10 +258,9 @@ public class PiezaMenu {
                 return;
             }
 
-            List<Pieza> piezas =
-                    piezaDao.buscarPorRangoPrecio(minimo, maximo);
-
-            mostrarPiezas(piezas);
+            mostrarPiezas(
+                    piezaDao.buscarPorRangoPrecio(minimo, maximo)
+            );
 
         } catch (NumberFormatException e) {
             System.out.println("Los precios deben ser números.");
@@ -283,7 +275,9 @@ public class PiezaMenu {
         System.out.print("Código del proveedor: ");
         String codigo = scanner.nextLine();
 
-        mostrarPiezas(piezaDao.buscarPorProveedor(codigo));
+        mostrarPiezas(
+                piezaDao.buscarPorProveedor(codigo)
+        );
     }
 
     private void buscarPorProyecto() {
@@ -294,7 +288,19 @@ public class PiezaMenu {
         System.out.print("Código del proyecto: ");
         String codigo = scanner.nextLine();
 
-        mostrarPiezas(piezaDao.buscarPorProyecto(codigo));
+        mostrarPiezas(
+                piezaDao.buscarPorProyecto(codigo)
+        );
+    }
+
+    private void listarTodas() {
+
+        System.out.println();
+        System.out.println("| LISTADO DE PIEZAS |");
+
+        mostrarPiezas(
+                piezaDao.listarTodos()
+        );
     }
 
     private void mostrarPiezas(List<Pieza> piezas) {

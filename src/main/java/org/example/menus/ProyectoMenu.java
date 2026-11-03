@@ -2,6 +2,7 @@ package org.example.menus;
 
 import org.example.dao.ProyectoDao;
 import org.example.models.Proyecto;
+import org.example.utils.AppLogger;
 
 import java.util.List;
 import java.util.Scanner;
@@ -97,13 +98,18 @@ public class ProyectoMenu {
         System.out.print("Ciudad: ");
         String ciudad = scanner.nextLine();
 
-        Proyecto proyecto = new Proyecto(codigo, nombre, ciudad);
+        Proyecto proyecto =
+                new Proyecto(codigo, nombre, ciudad);
 
         try {
             proyectoDao.create(proyecto);
+
             System.out.println("Proyecto creado correctamente.");
+            AppLogger.info("Proyecto creado: " + codigo);
+
         } catch (Exception e) {
             System.out.println("Error al crear el proyecto.");
+            AppLogger.error("Error al crear proyecto " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -124,10 +130,15 @@ public class ProyectoMenu {
 
         try {
             proyectoDao.delete(proyecto);
+
             System.out.println("Proyecto eliminado correctamente.");
+            AppLogger.info("Proyecto eliminado: " + codigo);
+
         } catch (Exception e) {
             System.out.println("No se puede eliminar el proyecto.");
             System.out.println("Puede tener suministros asociados.");
+
+            AppLogger.error("Error al eliminar proyecto " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -157,9 +168,13 @@ public class ProyectoMenu {
 
         try {
             proyectoDao.update(proyecto);
+
             System.out.println("Proyecto modificado correctamente.");
+            AppLogger.info("Proyecto modificado: " + codigo);
+
         } catch (Exception e) {
             System.out.println("Error al modificar el proyecto.");
+            AppLogger.error("Error al modificar proyecto " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -188,15 +203,9 @@ public class ProyectoMenu {
         System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
 
-        List<Proyecto> proyectos = proyectoDao.buscarPorNombre(nombre);
-
-        if (proyectos.isEmpty()) {
-            System.out.println("No se han encontrado proyectos.");
-        } else {
-            for (Proyecto proyecto : proyectos) {
-                System.out.println(proyecto);
-            }
-        }
+        mostrarProyectos(
+                proyectoDao.buscarPorNombre(nombre)
+        );
     }
 
     private void buscarPorCiudad() {
@@ -207,31 +216,9 @@ public class ProyectoMenu {
         System.out.print("Ciudad: ");
         String ciudad = scanner.nextLine();
 
-        List<Proyecto> proyectos = proyectoDao.buscarPorCiudad(ciudad);
-
-        if (proyectos.isEmpty()) {
-            System.out.println("No se han encontrado proyectos.");
-        } else {
-            for (Proyecto proyecto : proyectos) {
-                System.out.println(proyecto);
-            }
-        }
-    }
-
-    private void listarTodos() {
-
-        System.out.println();
-        System.out.println("| LISTADO DE PROYECTOS |");
-
-        List<Proyecto> proyectos = proyectoDao.listarTodos();
-
-        if (proyectos.isEmpty()) {
-            System.out.println("No hay proyectos.");
-        } else {
-            for (Proyecto proyecto : proyectos) {
-                System.out.println(proyecto);
-            }
-        }
+        mostrarProyectos(
+                proyectoDao.buscarPorCiudad(ciudad)
+        );
     }
 
     private void buscarPorProveedor() {
@@ -242,10 +229,9 @@ public class ProyectoMenu {
         System.out.print("Código del proveedor: ");
         String codigo = scanner.nextLine();
 
-        List<Proyecto> proyectos =
-                proyectoDao.buscarPorProveedor(codigo);
-
-        mostrarProyectos(proyectos);
+        mostrarProyectos(
+                proyectoDao.buscarPorProveedor(codigo)
+        );
     }
 
     private void buscarPorPieza() {
@@ -256,10 +242,19 @@ public class ProyectoMenu {
         System.out.print("Código de la pieza: ");
         String codigo = scanner.nextLine();
 
-        List<Proyecto> proyectos =
-                proyectoDao.buscarPorPieza(codigo);
+        mostrarProyectos(
+                proyectoDao.buscarPorPieza(codigo)
+        );
+    }
 
-        mostrarProyectos(proyectos);
+    private void listarTodos() {
+
+        System.out.println();
+        System.out.println("| LISTADO DE PROYECTOS |");
+
+        mostrarProyectos(
+                proyectoDao.listarTodos()
+        );
     }
 
     private void mostrarProyectos(List<Proyecto> proyectos) {

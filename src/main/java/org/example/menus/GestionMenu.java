@@ -8,6 +8,7 @@ import org.example.models.Gestion;
 import org.example.models.Pieza;
 import org.example.models.Proveedor;
 import org.example.models.Proyecto;
+import org.example.utils.AppLogger;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -94,7 +95,8 @@ public class GestionMenu {
         System.out.print("Código del proveedor: ");
         String codigoProveedor = scanner.nextLine();
 
-        Proveedor proveedor = proveedorDao.find(codigoProveedor);
+        Proveedor proveedor =
+                proveedorDao.find(codigoProveedor);
 
         if (proveedor == null) {
             System.out.println("El proveedor no existe.");
@@ -104,7 +106,8 @@ public class GestionMenu {
         System.out.print("Código de la pieza: ");
         String codigoPieza = scanner.nextLine();
 
-        Pieza pieza = piezaDao.find(codigoPieza);
+        Pieza pieza =
+                piezaDao.find(codigoPieza);
 
         if (pieza == null) {
             System.out.println("La pieza no existe.");
@@ -114,7 +117,8 @@ public class GestionMenu {
         System.out.print("Código del proyecto: ");
         String codigoProyecto = scanner.nextLine();
 
-        Proyecto proyecto = proyectoDao.find(codigoProyecto);
+        Proyecto proyecto =
+                proyectoDao.find(codigoProyecto);
 
         if (proyecto == null) {
             System.out.println("El proyecto no existe.");
@@ -126,6 +130,7 @@ public class GestionMenu {
         try {
             System.out.print("Fecha (AAAA-MM-DD): ");
             fecha = LocalDate.parse(scanner.nextLine());
+
         } catch (DateTimeParseException e) {
             System.out.println("Formato de fecha incorrecto.");
             return;
@@ -148,7 +153,13 @@ public class GestionMenu {
         }
 
         Gestion gestion =
-                new Gestion(fecha, cantidad, proveedor, pieza, proyecto);
+                new Gestion(
+                        fecha,
+                        cantidad,
+                        proveedor,
+                        pieza,
+                        proyecto
+                );
 
         try {
             gestionDao.create(gestion);
@@ -156,8 +167,18 @@ public class GestionMenu {
             System.out.println("Suministro creado correctamente.");
             System.out.println("ID asignado: " + gestion.getId());
 
+            AppLogger.info(
+                    "Suministro creado. ID: " +
+                            gestion.getId()
+            );
+
         } catch (Exception e) {
             System.out.println("Error al crear el suministro.");
+
+            AppLogger.error(
+                    "Error al crear suministro: " +
+                            e.getMessage()
+            );
         }
     }
 
@@ -172,7 +193,8 @@ public class GestionMenu {
             return;
         }
 
-        Gestion gestion = gestionDao.find(id);
+        Gestion gestion =
+                gestionDao.find(id);
 
         if (gestion == null) {
             System.out.println("Suministro no encontrado.");
@@ -181,9 +203,17 @@ public class GestionMenu {
 
         try {
             gestionDao.delete(gestion);
+
             System.out.println("Suministro eliminado correctamente.");
+            AppLogger.info("Suministro eliminado. ID: " + id);
+
         } catch (Exception e) {
             System.out.println("Error al eliminar el suministro.");
+
+            AppLogger.error(
+                    "Error al eliminar suministro " +
+                            id + ": " + e.getMessage()
+            );
         }
     }
 
@@ -198,7 +228,8 @@ public class GestionMenu {
             return;
         }
 
-        Gestion gestion = gestionDao.find(id);
+        Gestion gestion =
+                gestionDao.find(id);
 
         if (gestion == null) {
             System.out.println("Suministro no encontrado.");
@@ -208,7 +239,8 @@ public class GestionMenu {
         System.out.print("Código del proveedor: ");
         String codigoProveedor = scanner.nextLine();
 
-        Proveedor proveedor = proveedorDao.find(codigoProveedor);
+        Proveedor proveedor =
+                proveedorDao.find(codigoProveedor);
 
         if (proveedor == null) {
             System.out.println("El proveedor no existe.");
@@ -218,7 +250,8 @@ public class GestionMenu {
         System.out.print("Código de la pieza: ");
         String codigoPieza = scanner.nextLine();
 
-        Pieza pieza = piezaDao.find(codigoPieza);
+        Pieza pieza =
+                piezaDao.find(codigoPieza);
 
         if (pieza == null) {
             System.out.println("La pieza no existe.");
@@ -228,7 +261,8 @@ public class GestionMenu {
         System.out.print("Código del proyecto: ");
         String codigoProyecto = scanner.nextLine();
 
-        Proyecto proyecto = proyectoDao.find(codigoProyecto);
+        Proyecto proyecto =
+                proyectoDao.find(codigoProyecto);
 
         if (proyecto == null) {
             System.out.println("El proyecto no existe.");
@@ -240,6 +274,7 @@ public class GestionMenu {
         try {
             System.out.print("Nueva fecha (AAAA-MM-DD): ");
             fecha = LocalDate.parse(scanner.nextLine());
+
         } catch (DateTimeParseException e) {
             System.out.println("Formato de fecha incorrecto.");
             return;
@@ -269,9 +304,17 @@ public class GestionMenu {
 
         try {
             gestionDao.update(gestion);
+
             System.out.println("Suministro modificado correctamente.");
+            AppLogger.info("Suministro modificado. ID: " + id);
+
         } catch (Exception e) {
             System.out.println("Error al modificar el suministro.");
+
+            AppLogger.error(
+                    "Error al modificar suministro " +
+                            id + ": " + e.getMessage()
+            );
         }
     }
 
@@ -286,7 +329,8 @@ public class GestionMenu {
             return;
         }
 
-        Gestion gestion = gestionDao.find(id);
+        Gestion gestion =
+                gestionDao.find(id);
 
         if (gestion == null) {
             System.out.println("Suministro no encontrado.");
@@ -303,7 +347,9 @@ public class GestionMenu {
         System.out.print("Código del proveedor: ");
         String codigo = scanner.nextLine();
 
-        mostrarLista(gestionDao.buscarPorProveedor(codigo));
+        mostrarLista(
+                gestionDao.buscarPorProveedor(codigo)
+        );
     }
 
     private void buscarPorPieza() {
@@ -314,7 +360,9 @@ public class GestionMenu {
         System.out.print("Código de la pieza: ");
         String codigo = scanner.nextLine();
 
-        mostrarLista(gestionDao.buscarPorPieza(codigo));
+        mostrarLista(
+                gestionDao.buscarPorPieza(codigo)
+        );
     }
 
     private void buscarPorProyecto() {
@@ -325,7 +373,9 @@ public class GestionMenu {
         System.out.print("Código del proyecto: ");
         String codigo = scanner.nextLine();
 
-        mostrarLista(gestionDao.buscarPorProyecto(codigo));
+        mostrarLista(
+                gestionDao.buscarPorProyecto(codigo)
+        );
     }
 
     private void listarTodas() {
@@ -333,7 +383,9 @@ public class GestionMenu {
         System.out.println();
         System.out.println("| LISTADO DE SUMINISTROS |");
 
-        mostrarLista(gestionDao.listarTodos());
+        mostrarLista(
+                gestionDao.listarTodos()
+        );
     }
 
     private Integer leerId() {

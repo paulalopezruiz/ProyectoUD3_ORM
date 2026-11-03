@@ -2,6 +2,7 @@ package org.example.menus;
 
 import org.example.dao.ProveedorDao;
 import org.example.models.Proveedor;
+import org.example.utils.AppLogger;
 
 import java.util.List;
 import java.util.Scanner;
@@ -105,10 +106,13 @@ public class ProveedorMenu {
 
         try {
             proveedorDao.create(proveedor);
+
             System.out.println("Proveedor creado correctamente.");
+            AppLogger.info("Proveedor creado: " + codigo);
 
         } catch (Exception e) {
             System.out.println("Error al crear el proveedor.");
+            AppLogger.error("Error al crear proveedor " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -129,11 +133,15 @@ public class ProveedorMenu {
 
         try {
             proveedorDao.delete(proveedor);
+
             System.out.println("Proveedor eliminado correctamente.");
+            AppLogger.info("Proveedor eliminado: " + codigo);
 
         } catch (Exception e) {
             System.out.println("No se puede eliminar el proveedor.");
             System.out.println("Puede tener suministros asociados.");
+
+            AppLogger.error("Error al eliminar proveedor " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -167,10 +175,13 @@ public class ProveedorMenu {
 
         try {
             proveedorDao.update(proveedor);
+
             System.out.println("Proveedor modificado correctamente.");
+            AppLogger.info("Proveedor modificado: " + codigo);
 
         } catch (Exception e) {
             System.out.println("Error al modificar el proveedor.");
+            AppLogger.error("Error al modificar proveedor " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -202,13 +213,7 @@ public class ProveedorMenu {
         List<Proveedor> proveedores =
                 proveedorDao.buscarPorNombre(nombre);
 
-        if (proveedores.isEmpty()) {
-            System.out.println("No se han encontrado proveedores.");
-        } else {
-            for (Proveedor proveedor : proveedores) {
-                System.out.println(proveedor);
-            }
-        }
+        mostrarProveedores(proveedores);
     }
 
     private void buscarPorDireccion() {
@@ -222,30 +227,7 @@ public class ProveedorMenu {
         List<Proveedor> proveedores =
                 proveedorDao.buscarPorDireccion(direccion);
 
-        if (proveedores.isEmpty()) {
-            System.out.println("No se han encontrado proveedores.");
-        } else {
-            for (Proveedor proveedor : proveedores) {
-                System.out.println(proveedor);
-            }
-        }
-    }
-
-    private void listarTodos() {
-
-        System.out.println();
-        System.out.println("| LISTADO DE PROVEEDORES |");
-
-        List<Proveedor> proveedores =
-                proveedorDao.listarTodos();
-
-        if (proveedores.isEmpty()) {
-            System.out.println("No hay proveedores.");
-        } else {
-            for (Proveedor proveedor : proveedores) {
-                System.out.println(proveedor);
-            }
-        }
+        mostrarProveedores(proveedores);
     }
 
     private void buscarPorApellidos() {
@@ -256,16 +238,9 @@ public class ProveedorMenu {
         System.out.print("Apellidos: ");
         String apellidos = scanner.nextLine();
 
-        List<Proveedor> proveedores =
-                proveedorDao.buscarPorApellidos(apellidos);
-
-        if (proveedores.isEmpty()) {
-            System.out.println("No se han encontrado proveedores.");
-        } else {
-            for (Proveedor proveedor : proveedores) {
-                System.out.println(proveedor);
-            }
-        }
+        mostrarProveedores(
+                proveedorDao.buscarPorApellidos(apellidos)
+        );
     }
 
     private void buscarPorPieza() {
@@ -276,15 +251,30 @@ public class ProveedorMenu {
         System.out.print("Código de la pieza: ");
         String codigo = scanner.nextLine();
 
-        List<Proveedor> proveedores =
-                proveedorDao.buscarPorPieza(codigo);
+        mostrarProveedores(
+                proveedorDao.buscarPorPieza(codigo)
+        );
+    }
+
+    private void listarTodos() {
+
+        System.out.println();
+        System.out.println("| LISTADO DE PROVEEDORES |");
+
+        mostrarProveedores(
+                proveedorDao.listarTodos()
+        );
+    }
+
+    private void mostrarProveedores(List<Proveedor> proveedores) {
 
         if (proveedores.isEmpty()) {
             System.out.println("No se han encontrado proveedores.");
-        } else {
-            for (Proveedor proveedor : proveedores) {
-                System.out.println(proveedor);
-            }
+            return;
+        }
+
+        for (Proveedor proveedor : proveedores) {
+            System.out.println(proveedor);
         }
     }
 }
