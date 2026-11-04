@@ -2,41 +2,92 @@ package org.example;
 
 import org.example.dao.ProveedorDao;
 import org.example.models.Proveedor;
+import org.example.utils.ContextoSeguridad;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ProveedorDaoTest {
+
+    @BeforeEach
+    void iniciarContextoSeguridad() {
+        ContextoSeguridad.iniciar("TEST_JUNIT");
+    }
+
+    @AfterEach
+    void cerrarContextoSeguridad() {
+        ContextoSeguridad.cerrar();
+    }
 
     @Test
     void crearBuscarModificarYEliminarProveedor() {
 
-        ProveedorDao dao = new ProveedorDao();
+        String codigo =
+                "TEST_PR_"
+                        + UUID.randomUUID()
+                        .toString()
+                        .substring(0, 8);
 
-        String codigo = "TEST_PR_01";
+        try (
+                ProveedorDao dao =
+                        new ProveedorDao()
+        ) {
 
-        Proveedor proveedor = new Proveedor(
-                codigo,
-                "Paula",
-                "Lopez",
-                "Calle Test 1");
+            Proveedor proveedor =
+                    new Proveedor(
+                            codigo,
+                            "Paula",
+                            "Lopez",
+                            "Calle Test 1"
+                    );
 
-        dao.create(proveedor);
+            dao.create(proveedor);
 
-        Proveedor encontrado = dao.find(codigo);
+            Proveedor encontrado =
+                    dao.find(codigo);
 
-        assertNotNull(encontrado);
-        assertEquals("Paula", encontrado.getNombre());
+            assertNotNull(encontrado);
 
-        encontrado.setNombre("Laura");
-        dao.update(encontrado);
+            assertEquals(
+                    "Paula",
+                    encontrado.getNombre()
+            );
 
-        Proveedor modificado = dao.find(codigo);
+            String estadoAnterior =
+                    encontrado.toString();
 
-        assertEquals("Laura", modificado.getNombre());
+            encontrado.setNombre(
+                    "Laura"
+            );
 
-        dao.delete(modificado);
+            dao.update(
+                    encontrado,
+                    estadoAnterior
+            );
 
-        assertNull(dao.find(codigo));
+            Proveedor modificado =
+                    dao.find(codigo);
+
+            assertNotNull(modificado);
+
+            assertEquals(
+                    "Laura",
+                    modificado.getNombre()
+            );
+
+            dao.delete(
+                    modificado
+            );
+
+            assertNull(
+                    dao.find(codigo)
+            );
+        }
     }
 }

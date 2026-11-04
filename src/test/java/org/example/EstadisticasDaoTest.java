@@ -1,73 +1,180 @@
 package org.example;
 
-import org.example.dao.*;
-import org.example.models.*;
+import org.example.dao.EstadisticasDao;
+import org.example.dao.GestionDao;
+import org.example.dao.PiezaDao;
+import org.example.dao.ProveedorDao;
+import org.example.dao.ProyectoDao;
+import org.example.models.Gestion;
+import org.example.models.Pieza;
+import org.example.models.Proveedor;
+import org.example.models.Proyecto;
+import org.example.utils.ContextoSeguridad;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class EstadisticasDaoTest {
+
+    @BeforeEach
+    void iniciarContextoSeguridad() {
+        ContextoSeguridad.iniciar("TEST_JUNIT");
+    }
+
+    @AfterEach
+    void cerrarContextoSeguridad() {
+        ContextoSeguridad.cerrar();
+    }
 
     @Test
     void comprobarResumenProyecto() {
 
-        ProveedorDao proveedorDao = new ProveedorDao();
-        PiezaDao piezaDao = new PiezaDao();
-        ProyectoDao proyectoDao = new ProyectoDao();
-        GestionDao gestionDao = new GestionDao();
-        EstadisticasDao estadisticasDao = new EstadisticasDao();
+        String sufijo =
+                UUID.randomUUID()
+                        .toString()
+                        .substring(0, 8);
 
-        Proveedor proveedor = new Proveedor(
-                "TEST_PR_EST",
-                "Proveedor",
-                "Test",
-                "Dirección Test");
+        String codigoProveedor =
+                "TEST_PR_" + sufijo;
 
-        Pieza pieza = new Pieza(
-                "TEST_PI_EST",
-                "Pieza Estadistica",
-                10.0,
-                "Prueba");
+        String codigoPieza =
+                "TEST_PI_" + sufijo;
 
-        Proyecto proyecto = new Proyecto(
-                "TEST_PY_EST",
-                "Proyecto Estadistica",
-                "Vitoria");
+        String codigoProyecto =
+                "TEST_PY_" + sufijo;
 
-        proveedorDao.create(proveedor);
-        piezaDao.create(pieza);
-        proyectoDao.create(proyecto);
+        try (
+                ProveedorDao proveedorDao =
+                        new ProveedorDao();
 
-        Gestion gestion = new Gestion(
-                LocalDate.now(),
-                5,
-                proveedor,
-                pieza,
-                proyecto);
+                PiezaDao piezaDao =
+                        new PiezaDao();
 
-        gestionDao.create(gestion);
+                ProyectoDao proyectoDao =
+                        new ProyectoDao();
 
-        long proveedores = estadisticasDao.contarProveedoresProyecto(
-                        "TEST_PY_EST");
+                GestionDao gestionDao =
+                        new GestionDao();
 
-        long piezas = estadisticasDao.contarPiezasProyecto(
-                        "TEST_PY_EST");
+                EstadisticasDao estadisticasDao =
+                        new EstadisticasDao()
+        ) {
 
-        double coste = estadisticasDao.costeTotalProyecto(
-                        "TEST_PY_EST");
+            Proveedor proveedor =
+                    new Proveedor(
+                            codigoProveedor,
+                            "Proveedor",
+                            "Test",
+                            "Dirección Test"
+                    );
 
-        assertEquals(1, proveedores);
-        assertEquals(1, piezas);
-        assertEquals(50.0, coste, 0.01);
+            Pieza pieza =
+                    new Pieza(
+                            codigoPieza,
+                            "Pieza Estadistica",
+                            10.0,
+                            "Prueba"
+                    );
 
-        gestionDao.delete(gestionDao.find(gestion.getId()));
+            Proyecto proyecto =
+                    new Proyecto(
+                            codigoProyecto,
+                            "Proyecto Estadistica",
+                            "Vitoria"
+                    );
 
-        proveedorDao.delete(proveedorDao.find("TEST_PR_EST"));
+            proveedorDao.create(
+                    proveedor
+            );
 
-        piezaDao.delete(piezaDao.find("TEST_PI_EST"));
+            piezaDao.create(
+                    pieza
+            );
 
-        proyectoDao.delete(proyectoDao.find("TEST_PY_EST"));
+            proyectoDao.create(
+                    proyecto
+            );
+
+            Gestion gestion =
+                    new Gestion(
+                            LocalDate.now(),
+                            5,
+                            proveedor,
+                            pieza,
+                            proyecto
+                    );
+
+            gestionDao.create(
+                    gestion
+            );
+
+            assertNotNull(
+                    gestion.getId()
+            );
+
+            long proveedores =
+                    estadisticasDao
+                            .contarProveedoresProyecto(
+                                    codigoProyecto
+                            );
+
+            long piezas =
+                    estadisticasDao
+                            .contarPiezasProyecto(
+                                    codigoProyecto
+                            );
+
+            double coste =
+                    estadisticasDao
+                            .costeTotalProyecto(
+                                    codigoProyecto
+                            );
+
+            assertEquals(
+                    1,
+                    proveedores
+            );
+
+            assertEquals(
+                    1,
+                    piezas
+            );
+
+            assertEquals(
+                    50.0,
+                    coste,
+                    0.01
+            );
+
+            gestionDao.delete(
+                    gestionDao.find(
+                            gestion.getId()
+                    )
+            );
+
+            proveedorDao.delete(
+                    proveedorDao.find(
+                            codigoProveedor
+                    )
+            );
+
+            piezaDao.delete(
+                    piezaDao.find(
+                            codigoPieza
+                    )
+            );
+
+            proyectoDao.delete(
+                    proyectoDao.find(
+                            codigoProyecto
+                    )
+            );
+        }
     }
 }
