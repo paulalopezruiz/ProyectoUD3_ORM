@@ -474,7 +474,7 @@ public final class InterfazWeb implements AutoCloseable {
 
     private String pagina(String titulo, String contenido, String usuario, String csrf) {
         StringBuilder html = new StringBuilder("<!doctype html><html lang='es'><head><meta charset='utf-8'>")
-                .append("<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='color-scheme' content='light'>")
+                .append("<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='color-scheme' content='dark'>")
                 .append("<title>").append(esc(titulo)).append("</title><link rel='stylesheet' href='/style.css'></head><body>");
         if (usuario != null) {
             contenido = contenido.replace("</form>", hidden("csrf", csrf) + "</form>");
