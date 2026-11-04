@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+
+    <title>{{TITLE}}</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <a class="brand" href="/dashboard">
+        Gestión de Proyectos
+    </a>
+
+    <nav>
+        <a href="/dashboard">Inicio</a>
+        <a href="/proveedores">Proveedores</a>
+        <a href="/piezas">Piezas</a>
+        <a href="/proyectos">Proyectos</a>
+        <a href="/suministros">Suministros</a>
+    </nav>
+
+    <div class="profile">
+        <span>{{USER}}</span>
+
+        <form method="post" action="/logout">
+            {{CSRF}}
+            <button class="text-button" type="submit">
+                Salir
+            </button>
+        </form>
+    </div>
+
+</header>
+
+<main>
+    {{CONTENT}}
+</main>
+
+<script src="/app.js" defer></script>
+
+</body>
+</html>
