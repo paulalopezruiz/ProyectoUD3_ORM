@@ -23,22 +23,27 @@ public final class Persistencia {
     }
 
     private static EntityManagerFactory crearFactory() {
-        String password = System.getenv("DB_PASSWORD");
+        String password = valorConfiguracion("DB_PASSWORD", "db.password", null);
         if (password == null || password.isBlank()) {
             throw new IllegalStateException(
-                    "Configura la variable de entorno DB_PASSWORD para conectar con MariaDB.");
+                    "Configura DB_PASSWORD o la propiedad JVM -Ddb.password para conectar con MariaDB.");
         }
 
         Map<String, Object> propiedades = new HashMap<>();
-        propiedades.put("hibernate.connection.url", valorEntorno("DB_URL",
+        propiedades.put("hibernate.connection.url", valorConfiguracion("DB_URL", "db.url",
                 "jdbc:mariadb://localhost:33061/proyecto_ud3"));
-        propiedades.put("hibernate.connection.username", valorEntorno("DB_USERNAME", "root"));
+        propiedades.put("hibernate.connection.username", valorConfiguracion("DB_USERNAME", "db.username",
+                "root"));
         propiedades.put("hibernate.connection.password", password);
         return Persistence.createEntityManagerFactory("default", propiedades);
     }
 
-    private static String valorEntorno(String nombre, String valorPredeterminado) {
-        String valor = System.getenv(nombre);
+    private static String valorConfiguracion(String variableEntorno, String propiedadJvm,
+                                             String valorPredeterminado) {
+        String valor = System.getenv(variableEntorno);
+        if (valor == null || valor.isBlank()) {
+            valor = System.getProperty(propiedadJvm);
+        }
         return valor == null || valor.isBlank() ? valorPredeterminado : valor;
     }
 }
