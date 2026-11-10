@@ -584,7 +584,7 @@ public final class InterfazWeb implements AutoCloseable {
 
                     dao.create(
                             new Proveedor(
-                                    obligatorio(
+                                    codigo(
                                             p,
                                             "codigo"
                                     ),
@@ -615,7 +615,7 @@ public final class InterfazWeb implements AutoCloseable {
                     Proveedor item =
                             requerido(
                                     dao.find(
-                                            obligatorio(
+                                            codigo(
                                                     p,
                                                     "codigo"
                                             )
@@ -664,7 +664,7 @@ public final class InterfazWeb implements AutoCloseable {
                     dao.delete(
                             requerido(
                                     dao.find(
-                                            obligatorio(
+                                            codigo(
                                                     p,
                                                     "codigo"
                                             )
@@ -684,7 +684,7 @@ public final class InterfazWeb implements AutoCloseable {
 
                     dao.create(
                             new Pieza(
-                                    obligatorio(
+                                    codigo(
                                             p,
                                             "codigo"
                                     ),
@@ -716,7 +716,7 @@ public final class InterfazWeb implements AutoCloseable {
                     Pieza item =
                             requerido(
                                     dao.find(
-                                            obligatorio(
+                                            codigo(
                                                     p,
                                                     "codigo"
                                             )
@@ -766,7 +766,7 @@ public final class InterfazWeb implements AutoCloseable {
                     dao.delete(
                             requerido(
                                     dao.find(
-                                            obligatorio(
+                                            codigo(
                                                     p,
                                                     "codigo"
                                             )
@@ -786,7 +786,7 @@ public final class InterfazWeb implements AutoCloseable {
 
                     Proyecto item =
                             new Proyecto(
-                                    obligatorio(
+                                    codigo(
                                             p,
                                             "codigo"
                                     ),
@@ -824,7 +824,7 @@ public final class InterfazWeb implements AutoCloseable {
                     Proyecto item =
                             requerido(
                                     dao.find(
-                                            obligatorio(
+                                            codigo(
                                                     p,
                                                     "codigo"
                                             )
@@ -874,7 +874,7 @@ public final class InterfazWeb implements AutoCloseable {
                     dao.delete(
                             requerido(
                                     dao.find(
-                                            obligatorio(
+                                            codigo(
                                                     p,
                                                     "codigo"
                                             )
@@ -926,19 +926,19 @@ public final class InterfazWeb implements AutoCloseable {
     ) {
 
         String proveedorCodigo =
-                obligatorio(
+                codigo(
                         p,
                         "proveedor"
                 );
 
         String piezaCodigo =
-                obligatorio(
+                codigo(
                         p,
                         "pieza"
                 );
 
         String proyectoCodigo =
-                obligatorio(
+                codigo(
                         p,
                         "proyecto"
                 );
@@ -1018,7 +1018,7 @@ public final class InterfazWeb implements AutoCloseable {
     ) {
 
         String proyectoCodigo =
-                obligatorio(
+                codigo(
                         p,
                         "proyecto"
                 );
@@ -1053,7 +1053,7 @@ public final class InterfazWeb implements AutoCloseable {
             Proveedor proveedor =
                     requerido(
                             proveedores.find(
-                                    obligatorio(
+                                    codigo(
                                             p,
                                             "proveedor"
                                     )
@@ -1064,7 +1064,7 @@ public final class InterfazWeb implements AutoCloseable {
             Pieza pieza =
                     requerido(
                             piezas.find(
-                                    obligatorio(
+                                    codigo(
                                             p,
                                             "pieza"
                                     )
@@ -2480,6 +2480,25 @@ public final class InterfazWeb implements AutoCloseable {
         return requerido(
                 parametros.get(nombre)
         );
+    }
+
+    private String codigo(
+            Map<String, String> parametros,
+            String nombre
+    ) {
+
+        String codigo =
+                obligatorio(
+                        parametros,
+                        nombre
+                );
+
+        if (!codigo.matches("[A-Za-z0-9]+")) {
+
+            throw new IllegalArgumentException("El código solo puede contener letras y números.");
+        }
+
+        return codigo;
     }
 
     private double precio(

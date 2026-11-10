@@ -18,27 +18,34 @@ public class App {
         SesionAutenticada sesion = null;
         InterfazWeb interfazWeb = null;
         try {
-            sesion = servicioAutenticacion.autenticar();
-            if (sesion == null) {
-                System.out.println("Acceso cancelado o bloqueado.");
-                return;
-            }
+          sesion = servicioAutenticacion.autenticar();
+          if (sesion == null) {
+              System.out.println("Acceso cancelado o bloqueado.");
+              return;
+          }
 
-            ContextoSeguridad.iniciar(sesion.nombreUsuario());
-            interfazWeb = new InterfazWeb();
-            try {
-                interfazWeb.iniciar();
-            } catch (IOException e) {
-                AppLogger.error("No se pudo iniciar la interfaz web; continuará disponible la terminal.", e);
-                System.err.println("No se pudo iniciar la interfaz web: " + e.getMessage());
+          ContextoSeguridad.iniciar(sesion.nombreUsuario());
+          interfazWeb = new InterfazWeb();
+          try {
+              interfazWeb.iniciar();
+          } catch (IOException e) {
+              AppLogger.error("No se pudo iniciar la interfaz web; continuará disponible la terminal.", e);
+              System.err.println("No se pudo iniciar la interfaz web: " + e.getMessage());
                 interfazWeb.close();
                 interfazWeb = null;
             }
             MainMenu menu = new MainMenu();
             menu.mostrar();
+
         } catch (RuntimeException e) {
+
             AppLogger.error("Error no controlado durante la ejecución de la aplicación.", e);
-            throw e;
+
+            System.out.println();
+            System.out.println("Se ha producido un error inesperado.");
+
+            System.out.println("Consulta el archivo de log para más información.");
+
         } finally {
             if (interfazWeb != null) {
                 interfazWeb.close();
