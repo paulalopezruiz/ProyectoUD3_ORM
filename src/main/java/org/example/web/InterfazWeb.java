@@ -75,24 +75,28 @@ public final class InterfazWeb implements AutoCloseable {
                 "Interfaz web iniciada en " + url
         );
 
-        if (Desktop.isDesktopSupported()) {
-
-            try {
-
-                Desktop.getDesktop().browse(
-                        URI.create(url)
-                );
-
-            } catch (
-                    IOException |
-                    UnsupportedOperationException e
-            ) {
-
-                AppLogger.warn(
-                        "No se pudo abrir el navegador automáticamente: "
-                                + e.getMessage()
-                );
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(URI.create(url));
+            } else {
+                abrirNavegadorAlternativo(url);
             }
+        } catch (IOException | UnsupportedOperationException e) {
+            AppLogger.warn(
+                    "No se pudo abrir el navegador automáticamente: "
+                    + e.getMessage()
+            );
+        }
+    }
+
+    private void abrirNavegadorAlternativo(String url) throws IOException {
+        String sistema = System.getProperty("os.name", "").toLowerCase(Locale.ROOT);
+        if (sistema.contains("win")) {
+            new ProcessBuilder("rundll32", "url.dll,FileProtocolHandler", url).start();
+        } else if (sistema.contains("mac")) {
+            new ProcessBuilder("open", url).start();
+        } else {
+            new ProcessBuilder("xdg-open", url).start();
         }
     }
 

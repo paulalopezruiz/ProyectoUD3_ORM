@@ -15,16 +15,14 @@ public class ProyectoDao extends Dao<Proyecto, String> {
         return em.createQuery(
                         "SELECT p FROM Proyecto p WHERE LOWER(p.nombre) LIKE LOWER(:nombre)",
                         Proyecto.class)
-                .setParameter("nombre", "%" + nombre + "%")
-                .getResultList();
+                .setParameter("nombre", "%" + nombre + "%").getResultList();
     }
 
     public List<Proyecto> buscarPorCiudad(String ciudad) {
         return em.createQuery(
                         "SELECT p FROM Proyecto p WHERE LOWER(p.ciudad) LIKE LOWER(:ciudad)",
                         Proyecto.class)
-                .setParameter("ciudad", "%" + ciudad + "%")
-                .getResultList();
+                .setParameter("ciudad", "%" + ciudad + "%").getResultList();
     }
 
     public List<Proyecto> listarTodos() {
@@ -40,8 +38,7 @@ public class ProyectoDao extends Dao<Proyecto, String> {
                                 "WHERE g.proveedor.codigo = :codigo",
                         Proyecto.class
                 )
-                .setParameter("codigo", codigoProveedor)
-                .getResultList();
+                .setParameter("codigo", codigoProveedor).getResultList();
     }
 
     public List<Proyecto> buscarPorPieza(String codigoPieza) {
@@ -51,7 +48,6 @@ public class ProyectoDao extends Dao<Proyecto, String> {
                                 "WHERE g.pieza.codigo = :codigo",
                         Proyecto.class
                 )
-                .setParameter("codigo", codigoPieza)
-                .getResultList();
+                .setParameter("codigo", codigoPieza).getResultList();
     }
 }

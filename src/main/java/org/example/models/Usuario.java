@@ -23,7 +23,7 @@ public class Usuario {
 
     protected Usuario() {
     }
-
+ 
     public Usuario(String nombreUsuario, String hashContrasena, LocalDateTime creadoEn) {
         this.nombreUsuario = nombreUsuario;
         this.hashContrasena = hashContrasena;

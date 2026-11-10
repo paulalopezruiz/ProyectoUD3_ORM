@@ -18,22 +18,23 @@ public class App {
         SesionAutenticada sesion = null;
         InterfazWeb interfazWeb = null;
         try {
-          sesion = servicioAutenticacion.autenticar();
-          if (sesion == null) {
-              System.out.println("Acceso cancelado o bloqueado.");
-              return;
-          }
-
-          ContextoSeguridad.iniciar(sesion.nombreUsuario());
-          interfazWeb = new InterfazWeb();
-          try {
-              interfazWeb.iniciar();
-          } catch (IOException e) {
-              AppLogger.error("No se pudo iniciar la interfaz web; continuará disponible la terminal.", e);
-              System.err.println("No se pudo iniciar la interfaz web: " + e.getMessage());
+            interfazWeb = new InterfazWeb();
+            try {
+                interfazWeb.iniciar();
+            } catch (IOException e) {
+                AppLogger.error("No se pudo iniciar la interfaz web; continuará disponible la terminal.", e);
+                System.err.println("No se pudo iniciar la interfaz web: " + e.getMessage());
                 interfazWeb.close();
                 interfazWeb = null;
             }
+
+            sesion = servicioAutenticacion.autenticar();
+            if (sesion == null) {
+                System.out.println("Acceso cancelado o bloqueado.");
+                return;
+            }
+
+            ContextoSeguridad.iniciar(sesion.nombreUsuario());
             MainMenu menu = new MainMenu();
             menu.mostrar();
 

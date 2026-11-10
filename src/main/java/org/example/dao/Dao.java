@@ -114,7 +114,6 @@ public abstract class Dao<T, K> implements AutoCloseable {
                 Object id = metodo.invoke(objeto);
                 return id == null ? null : id.toString();
             } catch (NoSuchMethodException ignored) {
-                // Try the next supported identifier getter.
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new IllegalStateException("No se pudo obtener el identificador de la entidad.", e);
             }

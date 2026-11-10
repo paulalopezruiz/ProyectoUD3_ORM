@@ -31,8 +31,7 @@ public class Exportador {
             mapper.writerWithDefaultPrettyPrinter()
                     .writeValue(
                             new File("exports/datos.json"),
-                            prepararDatos(proveedores, piezas, proyectos, gestiones)
-                    );
+                            prepararDatos(proveedores, piezas, proyectos, gestiones));
 
             System.out.println("JSON exportado correctamente.");
             System.out.println("Archivo: exports/datos.json");
@@ -118,7 +117,6 @@ public class Exportador {
 
             suministros.add(suministro);
         }
-
         datos.put("suministros", suministros);
 
         return datos;

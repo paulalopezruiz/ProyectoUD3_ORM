@@ -14,34 +14,27 @@ public class GestionDao extends Dao<Gestion, Integer> {
     public List<Gestion> listarTodos() {
         return em.createQuery(
                 "SELECT g FROM Gestion g",
-                Gestion.class
-        ).getResultList();
+                Gestion.class).getResultList();
     }
 
     public List<Gestion> buscarPorProveedor(String codigoProveedor) {
         return em.createQuery(
                         "SELECT g FROM Gestion g WHERE g.proveedor.codigo = :codigo",
-                        Gestion.class
-                )
-                .setParameter("codigo", codigoProveedor)
-                .getResultList();
+                        Gestion.class)
+                .setParameter("codigo", codigoProveedor).getResultList();
     }
 
     public List<Gestion> buscarPorPieza(String codigoPieza) {
         return em.createQuery(
                         "SELECT g FROM Gestion g WHERE g.pieza.codigo = :codigo",
-                        Gestion.class
-                )
-                .setParameter("codigo", codigoPieza)
-                .getResultList();
+                        Gestion.class)
+                .setParameter("codigo", codigoPieza).getResultList();
     }
 
     public List<Gestion> buscarPorProyecto(String codigoProyecto) {
         return em.createQuery(
                         "SELECT g FROM Gestion g WHERE g.proyecto.codigo = :codigo",
-                        Gestion.class
-                )
-                .setParameter("codigo", codigoProyecto)
-                .getResultList();
+                        Gestion.class)
+                .setParameter("codigo", codigoProyecto).getResultList();
     }
 }

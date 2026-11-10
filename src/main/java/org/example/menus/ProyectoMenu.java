@@ -86,28 +86,48 @@ public class ProyectoMenu {
         System.out.println();
         System.out.println("| ALTA DE PROYECTO |");
 
-        String codigo = Validaciones.leerObligatorio(scanner, "Código: ");
+        String codigo =
+                Validaciones.leerCodigoAlfanumerico(
+                        scanner,
+                        "Código: "
+                );
 
         if (proyectoDao.find(codigo) != null) {
             System.out.println("Ya existe un proyecto con ese código.");
             return;
         }
 
-        String nombre = Validaciones.leerObligatorio(scanner, "Nombre: ");
-        String ciudad = Validaciones.leerObligatorio(scanner, "Ciudad: ");
+        String nombre =
+                Validaciones.leerObligatorio(
+                        scanner,
+                        "Nombre: "
+                );
+
+        String ciudad =
+                Validaciones.leerObligatorio(
+                        scanner,
+                        "Ciudad: "
+                );
 
         Proyecto proyecto =
-                new Proyecto(codigo, nombre, ciudad);
+                new Proyecto(
+                        codigo,
+                        nombre,
+                        ciudad);
+
         proyecto.setEstado(Validaciones.leerEstadoProyecto(scanner));
 
         try {
             proyectoDao.create(proyecto);
 
             System.out.println("Proyecto creado correctamente.");
+
             AppLogger.info("Proyecto creado: " + codigo);
 
         } catch (Exception e) {
+
             System.out.println("Error al crear el proyecto.");
+
             AppLogger.error("Error al crear proyecto " + codigo, e);
         }
     }
@@ -117,18 +137,26 @@ public class ProyectoMenu {
         System.out.println();
         System.out.println("| BAJA DE PROYECTO |");
 
-        System.out.print("Código del proyecto: ");
-        String codigo = scanner.nextLine();
+        String codigo =
+                Validaciones.leerCodigoAlfanumerico(
+                        scanner,
+                        "Código del proyecto: "
+                );
 
-        Proyecto proyecto = proyectoDao.find(codigo);
+        Proyecto proyecto =
+                proyectoDao.find(codigo);
 
         if (proyecto == null) {
             System.out.println("Proyecto no encontrado.");
             return;
         }
 
-        if (!Validaciones.confirmar(scanner, "eliminar el proyecto " + codigo)) {
+        if (!Validaciones.confirmar(
+                scanner,
+                "eliminar el proyecto " + codigo
+        )) {
             System.out.println("Eliminación cancelada.");
+
             return;
         }
 
@@ -139,10 +167,12 @@ public class ProyectoMenu {
             AppLogger.info("Proyecto eliminado: " + codigo);
 
         } catch (Exception e) {
-            System.out.println("No se puede eliminar el proyecto.");
-            System.out.println("Puede tener suministros asociados.");
 
-            AppLogger.error("Error al eliminar proyecto " + codigo, e);
+            System.out.println("No se puede eliminar el proyecto.");
+
+            System.out.println("Puede tener suministros asociados.");
+            AppLogger.error("Error al eliminar proyecto " + codigo, e
+            );
         }
     }
 
@@ -151,33 +181,56 @@ public class ProyectoMenu {
         System.out.println();
         System.out.println("| MODIFICAR PROYECTO |");
 
-        System.out.print("Código del proyecto: ");
-        String codigo = scanner.nextLine();
+        String codigo =
+                Validaciones.leerCodigoAlfanumerico(
+                        scanner,
+                        "Código del proyecto: "
+                );
 
         Proyecto proyecto = proyectoDao.find(codigo);
 
         if (proyecto == null) {
-            System.out.println("Proyecto no encontrado.");
+
+            System.out.println(
+                    "Proyecto no encontrado."
+            );
             return;
         }
 
-        String nombre = Validaciones.leerObligatorio(scanner, "Nuevo nombre: ");
-        String ciudad = Validaciones.leerObligatorio(scanner, "Nueva ciudad: ");
+        String nombre =
+                Validaciones.leerObligatorio(
+                        scanner,
+                        "Nuevo nombre: "
+                );
+
+        String ciudad =
+                Validaciones.leerObligatorio(
+                        scanner,
+                        "Nueva ciudad: "
+                );
+
         var estado = Validaciones.leerEstadoProyecto(scanner);
 
         String estadoAnterior = proyecto.toString();
+
         proyecto.setNombre(nombre);
         proyecto.setCiudad(ciudad);
         proyecto.setEstado(estado);
 
         try {
-            proyectoDao.update(proyecto, estadoAnterior);
+            proyectoDao.update(
+                    proyecto,
+                    estadoAnterior
+            );
 
             System.out.println("Proyecto modificado correctamente.");
+
             AppLogger.info("Proyecto modificado: " + codigo);
 
         } catch (Exception e) {
+
             System.out.println("Error al modificar el proyecto.");
+
             AppLogger.error("Error al modificar proyecto " + codigo, e);
         }
     }
@@ -187,14 +240,18 @@ public class ProyectoMenu {
         System.out.println();
         System.out.println("| BUSCAR POR CÓDIGO |");
 
-        System.out.print("Código: ");
-        String codigo = scanner.nextLine();
+        String codigo =
+                Validaciones.leerCodigoAlfanumerico(
+                        scanner,
+                        "Código: "
+                );
 
         Proyecto proyecto = proyectoDao.find(codigo);
 
         if (proyecto == null) {
             System.out.println("Proyecto no encontrado.");
         } else {
+
             System.out.println(proyecto);
         }
     }
@@ -204,12 +261,12 @@ public class ProyectoMenu {
         System.out.println();
         System.out.println("| BUSCAR POR NOMBRE |");
 
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
+        String nombre =
+                Validaciones.leerObligatorio(
+                        scanner,
+                        "Nombre: ");
 
-        mostrarProyectos(
-                proyectoDao.buscarPorNombre(nombre)
-        );
+        mostrarProyectos(proyectoDao.buscarPorNombre(nombre));
     }
 
     private void buscarPorCiudad() {
@@ -217,12 +274,13 @@ public class ProyectoMenu {
         System.out.println();
         System.out.println("| BUSCAR POR CIUDAD |");
 
-        System.out.print("Ciudad: ");
-        String ciudad = scanner.nextLine();
+        String ciudad =
+                Validaciones.leerObligatorio(
+                        scanner,
+                        "Ciudad: "
+                );
 
-        mostrarProyectos(
-                proyectoDao.buscarPorCiudad(ciudad)
-        );
+        mostrarProyectos(proyectoDao.buscarPorCiudad(ciudad));
     }
 
     private void buscarPorProveedor() {
@@ -230,11 +288,13 @@ public class ProyectoMenu {
         System.out.println();
         System.out.println("| BUSCAR POR PROVEEDOR |");
 
-        System.out.print("Código del proveedor: ");
-        String codigo = scanner.nextLine();
+        String codigo =
+                Validaciones.leerCodigoAlfanumerico(
+                        scanner,
+                        "Código del proveedor: "
+                );
 
-        mostrarProyectos(
-                proyectoDao.buscarPorProveedor(codigo)
+        mostrarProyectos(proyectoDao.buscarPorProveedor(codigo)
         );
     }
 
@@ -243,12 +303,12 @@ public class ProyectoMenu {
         System.out.println();
         System.out.println("| BUSCAR POR PIEZA |");
 
-        System.out.print("Código de la pieza: ");
-        String codigo = scanner.nextLine();
-
-        mostrarProyectos(
-                proyectoDao.buscarPorPieza(codigo)
-        );
+        String codigo =
+                Validaciones.leerCodigoAlfanumerico(
+                        scanner,
+                        "Código de la pieza: "
+                );
+        mostrarProyectos(proyectoDao.buscarPorPieza(codigo));
     }
 
     private void listarTodos() {
@@ -256,15 +316,15 @@ public class ProyectoMenu {
         System.out.println();
         System.out.println("| LISTADO DE PROYECTOS |");
 
-        mostrarProyectos(
-                proyectoDao.listarTodos()
-        );
+        mostrarProyectos(proyectoDao.listarTodos());
     }
 
     private void mostrarProyectos(List<Proyecto> proyectos) {
 
         if (proyectos.isEmpty()) {
+
             System.out.println("No se han encontrado proyectos.");
+
             return;
         }
 

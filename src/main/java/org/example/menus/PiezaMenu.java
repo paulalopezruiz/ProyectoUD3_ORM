@@ -11,8 +11,11 @@ import java.util.Scanner;
 
 public class PiezaMenu {
 
-    private final Scanner scanner = EntradaConsola.scanner();
-    private final PiezaDao piezaDao = new PiezaDao();
+    private final Scanner scanner =
+            EntradaConsola.scanner();
+
+    private final PiezaDao piezaDao =
+            new PiezaDao();
 
     public void mostrar() {
 
@@ -37,44 +40,60 @@ public class PiezaMenu {
             System.out.print("Selecciona una opción: ");
 
             try {
-                opcion = Integer.parseInt(scanner.nextLine());
+
+                opcion =
+                        Integer.parseInt(
+                                scanner.nextLine()
+                        );
 
                 switch (opcion) {
+
                     case 1:
                         altaPieza();
                         break;
+
                     case 2:
                         bajaPieza();
                         break;
+
                     case 3:
                         modificarPieza();
                         break;
+
                     case 4:
                         buscarPorCodigo();
                         break;
+
                     case 5:
                         buscarPorNombre();
                         break;
+
                     case 6:
                         buscarPorPrecio();
                         break;
+
                     case 7:
                         buscarPorProveedor();
                         break;
+
                     case 8:
                         buscarPorProyecto();
                         break;
+
                     case 9:
                         listarTodas();
                         break;
+
                     case 0:
                         System.out.println("Volviendo al menú principal...");
                         break;
+
                     default:
                         System.out.println("Opción no válida.");
                 }
 
             } catch (NumberFormatException e) {
+
                 System.out.println("Debes introducir un número.");
             }
 
@@ -86,30 +105,51 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| ALTA DE PIEZA |");
 
-        String codigo = Validaciones.leerObligatorio(scanner, "Código: ");
+        String codigo =
+                Validaciones.leerCodigoAlfanumerico(
+                        scanner,
+                        "Código: ");
 
         if (piezaDao.find(codigo) != null) {
+
             System.out.println("Ya existe una pieza con ese código.");
+
             return;
         }
 
-        String nombre = Validaciones.leerObligatorio(scanner, "Nombre: ");
-        double precio = Validaciones.leerPrecio(scanner, "Precio: ");
+        String nombre =
+                Validaciones.leerObligatorio(
+                        scanner,
+                        "Nombre: ");
+
+        double precio =
+                Validaciones.leerPrecio(
+                        scanner,
+                        "Precio: ");
 
         System.out.print("Descripción: ");
+
         String descripcion = scanner.nextLine().trim();
 
         Pieza pieza =
-                new Pieza(codigo, nombre, precio, descripcion);
+                new Pieza(
+                        codigo,
+                        nombre,
+                        precio,
+                        descripcion);
 
         try {
+
             piezaDao.create(pieza);
 
             System.out.println("Pieza creada correctamente.");
+
             AppLogger.info("Pieza creada: " + codigo);
 
         } catch (Exception e) {
+
             System.out.println("Error al crear la pieza.");
+
             AppLogger.error("Error al crear pieza " + codigo, e);
         }
     }
@@ -119,32 +159,41 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| BAJA DE PIEZA |");
 
-        System.out.print("Código de la pieza: ");
-        String codigo = scanner.nextLine();
+        String codigo =
+                Validaciones.leerCodigoAlfanumerico(
+                        scanner,
+                        "Código de la pieza: ");
 
         Pieza pieza = piezaDao.find(codigo);
 
         if (pieza == null) {
+
             System.out.println("Pieza no encontrada.");
             return;
         }
 
         if (!Validaciones.confirmar(scanner, "eliminar la pieza " + codigo)) {
+
             System.out.println("Eliminación cancelada.");
             return;
         }
 
         try {
+
             piezaDao.delete(pieza);
 
             System.out.println("Pieza eliminada correctamente.");
+
             AppLogger.info("Pieza eliminada: " + codigo);
 
         } catch (Exception e) {
+
             System.out.println("No se puede eliminar la pieza.");
+
             System.out.println("Puede tener suministros asociados.");
 
-            AppLogger.error("Error al eliminar pieza " + codigo, e);
+            AppLogger.error("Error al eliminar pieza " + codigo, e
+            );
         }
     }
 
@@ -153,34 +202,55 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| MODIFICAR PIEZA |");
 
-        System.out.print("Código de la pieza: ");
-        String codigo = scanner.nextLine();
+        String codigo =
+                Validaciones.leerCodigoAlfanumerico(
+                        scanner,
+                        "Código de la pieza: ");
 
         Pieza pieza = piezaDao.find(codigo);
 
         if (pieza == null) {
-            System.out.println("Pieza no encontrada.");
+
+            System.out.println(
+                    "Pieza no encontrada.");
             return;
         }
 
-        String nombre = Validaciones.leerObligatorio(scanner, "Nuevo nombre: ");
-        double precio = Validaciones.leerPrecio(scanner, "Nuevo precio: ");
+        String nombre =
+                Validaciones.leerObligatorio(
+                        scanner,
+                        "Nuevo nombre: ");
+
+        double precio =
+                Validaciones.leerPrecio(
+                        scanner,
+                        "Nuevo precio: ");
+
         System.out.print("Nueva descripción: ");
+
         String descripcion = scanner.nextLine().trim();
 
         String estadoAnterior = pieza.toString();
+
         pieza.setNombre(nombre);
         pieza.setPrecio(precio);
         pieza.setDescripcion(descripcion);
 
         try {
-            piezaDao.update(pieza, estadoAnterior);
+
+            piezaDao.update(
+                    pieza,
+                    estadoAnterior
+            );
 
             System.out.println("Pieza modificada correctamente.");
+
             AppLogger.info("Pieza modificada: " + codigo);
 
         } catch (Exception e) {
+
             System.out.println("Error al modificar la pieza.");
+
             AppLogger.error("Error al modificar pieza " + codigo, e);
         }
     }
@@ -190,13 +260,17 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| BUSCAR POR CÓDIGO |");
 
-        System.out.print("Código: ");
-        String codigo = scanner.nextLine();
+        String codigo =
+                Validaciones.leerCodigoAlfanumerico(
+                        scanner,
+                        "Código: ");
 
-        Pieza pieza = piezaDao.find(codigo);
+        Pieza pieza =
+                piezaDao.find(codigo);
 
         if (pieza == null) {
             System.out.println("Pieza no encontrada.");
+
         } else {
             System.out.println(pieza);
         }
@@ -207,12 +281,13 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| BUSCAR POR NOMBRE |");
 
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
+        String nombre =
+                Validaciones.leerObligatorio(
+                        scanner,
+                        "Nombre: "
+                );
 
-        mostrarPiezas(
-                piezaDao.buscarPorNombre(nombre)
-        );
+        mostrarPiezas(piezaDao.buscarPorNombre(nombre));
     }
 
     private void buscarPorPrecio() {
@@ -221,16 +296,21 @@ public class PiezaMenu {
         System.out.println("| BUSCAR POR PRECIO |");
 
         double minimo = Validaciones.leerPrecio(scanner, "Precio mínimo: ");
+
         double maximo;
+
         do {
             maximo = Validaciones.leerPrecio(scanner, "Precio máximo: ");
             if (maximo < minimo) {
                 System.out.println("El precio máximo debe ser igual o mayor que el mínimo.");
             }
+
         } while (maximo < minimo);
 
         mostrarPiezas(
-                piezaDao.buscarPorRangoPrecio(minimo, maximo)
+                piezaDao.buscarPorRangoPrecio(
+                        minimo,
+                        maximo)
         );
     }
 
@@ -239,12 +319,9 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| BUSCAR POR PROVEEDOR |");
 
-        System.out.print("Código del proveedor: ");
-        String codigo = scanner.nextLine();
+        String codigo = Validaciones.leerCodigoAlfanumerico(scanner, "Código del proveedor: ");
 
-        mostrarPiezas(
-                piezaDao.buscarPorProveedor(codigo)
-        );
+        mostrarPiezas(piezaDao.buscarPorProveedor(codigo));
     }
 
     private void buscarPorProyecto() {
@@ -252,12 +329,9 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| BUSCAR POR PROYECTO |");
 
-        System.out.print("Código del proyecto: ");
-        String codigo = scanner.nextLine();
+        String codigo = Validaciones.leerCodigoAlfanumerico(scanner, "Código del proyecto: ");
 
-        mostrarPiezas(
-                piezaDao.buscarPorProyecto(codigo)
-        );
+        mostrarPiezas(piezaDao.buscarPorProyecto(codigo));
     }
 
     private void listarTodas() {
@@ -265,9 +339,7 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| LISTADO DE PIEZAS |");
 
-        mostrarPiezas(
-                piezaDao.listarTodos()
-        );
+        mostrarPiezas(piezaDao.listarTodos());
     }
 
     private void mostrarPiezas(List<Pieza> piezas) {
