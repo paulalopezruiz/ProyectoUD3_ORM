@@ -619,9 +619,9 @@ public final class InterfazWeb implements AutoCloseable {
                     Proveedor item =
                             requerido(
                                     dao.find(
-                                            codigo(
+                                            obligatorio(
                                                     p,
-                                                    "codigo"
+                                                    "codigoExistente"
                                             )
                                     ),
                                     "Proveedor no encontrado."
@@ -720,9 +720,9 @@ public final class InterfazWeb implements AutoCloseable {
                     Pieza item =
                             requerido(
                                     dao.find(
-                                            codigo(
+                                            obligatorio(
                                                     p,
-                                                    "codigo"
+                                                    "codigoExistente"
                                             )
                                     ),
                                     "Pieza no encontrada."
@@ -828,9 +828,9 @@ public final class InterfazWeb implements AutoCloseable {
                     Proyecto item =
                             requerido(
                                     dao.find(
-                                            codigo(
+                                            obligatorio(
                                                     p,
-                                                    "codigo"
+                                                    "codigoExistente"
                                             )
                                     ),
                                     "Proyecto no encontrado."
@@ -930,19 +930,19 @@ public final class InterfazWeb implements AutoCloseable {
     ) {
 
         String proveedorCodigo =
-                codigo(
+                obligatorio(
                         p,
                         "proveedor"
                 );
 
         String piezaCodigo =
-                codigo(
+                obligatorio(
                         p,
                         "pieza"
                 );
 
         String proyectoCodigo =
-                codigo(
+                obligatorio(
                         p,
                         "proyecto"
                 );
@@ -1022,7 +1022,7 @@ public final class InterfazWeb implements AutoCloseable {
     ) {
 
         String proyectoCodigo =
-                codigo(
+                obligatorio(
                         p,
                         "proyecto"
                 );
@@ -1057,7 +1057,7 @@ public final class InterfazWeb implements AutoCloseable {
             Proveedor proveedor =
                     requerido(
                             proveedores.find(
-                                    codigo(
+                                    obligatorio(
                                             p,
                                             "proveedor"
                                     )
@@ -1068,7 +1068,7 @@ public final class InterfazWeb implements AutoCloseable {
             Pieza pieza =
                     requerido(
                             piezas.find(
-                                    codigo(
+                                    obligatorio(
                                             p,
                                             "pieza"
                                     )
@@ -1335,7 +1335,7 @@ public final class InterfazWeb implements AutoCloseable {
                     )
                     .append(
                             hidden(
-                                    "codigo",
+                                    "codigoExistente",
                                     item.getCodigo()
                             )
                     )
@@ -1512,9 +1512,17 @@ public final class InterfazWeb implements AutoCloseable {
                     )
                     .append(
                             hidden(
-                                    "codigo",
+                                    "codigoExistente",
                                     item.getCodigo()
                             )
+                    )
+                    .append(
+                            "<label>Código (no modificable)"
+                                    + "<input type='text' "
+                                    + "value='"
+                                    + esc(item.getCodigo())
+                                    + "' readonly>"
+                                    + "</label>"
                     )
                     .append(
                             input(
@@ -1686,9 +1694,17 @@ public final class InterfazWeb implements AutoCloseable {
                     )
                     .append(
                             hidden(
-                                    "codigo",
+                                    "codigoExistente",
                                     item.getCodigo()
                             )
+                    )
+                    .append(
+                            "<label>Código (no modificable)"
+                                    + "<input type='text' "
+                                    + "value='"
+                                    + esc(item.getCodigo())
+                                    + "' readonly>"
+                                    + "</label>"
                     )
                     .append(
                             input(
