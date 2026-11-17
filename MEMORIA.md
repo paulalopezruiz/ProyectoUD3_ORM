@@ -23,9 +23,18 @@ La aplicación utiliza por defecto:
 - URL: `jdbc:mariadb://localhost:33061/proyecto_ud3`
 - Usuario: `root`
 
-La contraseña no está escrita en el código. Hay que configurar la variable de
-entorno `DB_PASSWORD`. También se pueden cambiar la URL y el usuario mediante
-`DB_URL` y `DB_USERNAME`.
+La contraseña no está escrita en el código. Para configurarla desde IntelliJ,
+se debe abrir `Run > Edit Configurations`, seleccionar la configuración de
+`App` y añadir en **Environment variables**:
+
+```text
+DB_PASSWORD=tu_contraseña_de_MariaDB
+```
+
+Después se pulsa **Apply**, **OK** y se ejecuta la aplicación. También se
+pueden cambiar la URL y el usuario mediante las variables `DB_URL` y
+`DB_USERNAME`. Como alternativa, se puede definir temporalmente `DB_PASSWORD`
+en PowerShell antes de iniciar la aplicación.
 
 Hibernate utiliza `hibernate.hbm2ddl.auto=update`, por lo que crea o actualiza
 las tablas a partir de las entidades. No es necesario ejecutar un script SQL
