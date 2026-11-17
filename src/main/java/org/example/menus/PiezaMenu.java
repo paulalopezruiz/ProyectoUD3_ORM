@@ -106,7 +106,7 @@ public class PiezaMenu {
         System.out.println("| ALTA DE PIEZA |");
 
         String codigo =
-                Validaciones.leerCodigoAlfanumerico(
+                Validaciones.leerCodigoNumerico(
                         scanner,
                         "Código: ");
 
@@ -160,7 +160,7 @@ public class PiezaMenu {
         System.out.println("| BAJA DE PIEZA |");
 
         String codigo =
-                Validaciones.leerCodigoAlfanumerico(
+                Validaciones.leerCodigoNumerico(
                         scanner,
                         "Código de la pieza: ");
 
@@ -203,7 +203,7 @@ public class PiezaMenu {
         System.out.println("| MODIFICAR PIEZA |");
 
         String codigo =
-                Validaciones.leerCodigoAlfanumerico(
+                Validaciones.leerCodigoNumerico(
                         scanner,
                         "Código de la pieza: ");
 
@@ -261,7 +261,7 @@ public class PiezaMenu {
         System.out.println("| BUSCAR POR CÓDIGO |");
 
         String codigo =
-                Validaciones.leerCodigoAlfanumerico(
+                Validaciones.leerCodigoNumerico(
                         scanner,
                         "Código: ");
 
@@ -319,7 +319,7 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| BUSCAR POR PROVEEDOR |");
 
-        String codigo = Validaciones.leerCodigoAlfanumerico(scanner, "Código del proveedor: ");
+        String codigo = Validaciones.leerCodigoNumerico(scanner, "Código del proveedor: ");
 
         mostrarPiezas(piezaDao.buscarPorProveedor(codigo));
     }
@@ -329,7 +329,7 @@ public class PiezaMenu {
         System.out.println();
         System.out.println("| BUSCAR POR PROYECTO |");
 
-        String codigo = Validaciones.leerCodigoAlfanumerico(scanner, "Código del proyecto: ");
+        String codigo = Validaciones.leerCodigoNumerico(scanner, "Código del proyecto: ");
 
         mostrarPiezas(piezaDao.buscarPorProyecto(codigo));
     }

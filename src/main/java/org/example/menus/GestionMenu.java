@@ -115,7 +115,7 @@ public class GestionMenu {
         System.out.println();
         System.out.println("| ALTA DE SUMINISTRO |");
 
-        String codigoProveedor = Validaciones.leerCodigoAlfanumerico(scanner, "Código del proveedor: ");
+        String codigoProveedor = Validaciones.leerCodigoNumerico(scanner, "Código del proveedor: ");
 
         Proveedor proveedor = proveedorDao.find(codigoProveedor);
 
@@ -125,7 +125,7 @@ public class GestionMenu {
             return;
         }
 
-        String codigoPieza = Validaciones.leerCodigoAlfanumerico(scanner, "Código de la pieza: ");
+        String codigoPieza = Validaciones.leerCodigoNumerico(scanner, "Código de la pieza: ");
 
         Pieza pieza = piezaDao.find(codigoPieza);
 
@@ -135,7 +135,7 @@ public class GestionMenu {
             return;
         }
 
-        String codigoProyecto = Validaciones.leerCodigoAlfanumerico(
+        String codigoProyecto = Validaciones.leerCodigoNumerico(
                         scanner, "Código del proyecto: ");
 
         Proyecto proyecto = proyectoDao.find(codigoProyecto);
@@ -245,7 +245,7 @@ public class GestionMenu {
             return;
         }
 
-        String codigoProveedor = Validaciones.leerCodigoAlfanumerico(scanner, "Código del proveedor: ");
+        String codigoProveedor = Validaciones.leerCodigoNumerico(scanner, "Código del proveedor: ");
 
         Proveedor proveedor = proveedorDao.find(codigoProveedor);
 
@@ -255,7 +255,7 @@ public class GestionMenu {
             return;
         }
 
-        String codigoPieza = Validaciones.leerCodigoAlfanumerico(scanner, "Código de la pieza: ");
+        String codigoPieza = Validaciones.leerCodigoNumerico(scanner, "Código de la pieza: ");
 
         Pieza pieza = piezaDao.find(codigoPieza);
 
@@ -264,7 +264,7 @@ public class GestionMenu {
             return;
         }
 
-        String codigoProyecto = Validaciones.leerCodigoAlfanumerico(scanner, "Código del proyecto: ");
+        String codigoProyecto = Validaciones.leerCodigoNumerico(scanner, "Código del proyecto: ");
 
         Proyecto proyecto = proyectoDao.find(codigoProyecto);
 
@@ -334,7 +334,7 @@ public class GestionMenu {
         System.out.println();
         System.out.println("| BUSCAR POR PROVEEDOR |");
 
-        String codigo = Validaciones.leerCodigoAlfanumerico(scanner, "Código del proveedor: ");
+        String codigo = Validaciones.leerCodigoNumerico(scanner, "Código del proveedor: ");
 
         mostrarLista(gestionDao.buscarPorProveedor(codigo));
     }
@@ -344,7 +344,7 @@ public class GestionMenu {
         System.out.println();
         System.out.println("| BUSCAR POR PIEZA |");
 
-        String codigo = Validaciones.leerCodigoAlfanumerico(
+        String codigo = Validaciones.leerCodigoNumerico(
                 scanner, "Código de la pieza: ");
 
         mostrarLista(gestionDao.buscarPorPieza(codigo));
@@ -355,7 +355,7 @@ public class GestionMenu {
         System.out.println();
         System.out.println("| BUSCAR POR PROYECTO |");
 
-        String codigo = Validaciones.leerCodigoAlfanumerico(scanner, "Código del proyecto: ");
+        String codigo = Validaciones.leerCodigoNumerico(scanner, "Código del proyecto: ");
 
         mostrarLista(gestionDao.buscarPorProyecto(codigo));
     }

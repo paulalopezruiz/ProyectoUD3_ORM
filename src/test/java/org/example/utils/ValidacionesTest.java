@@ -31,6 +31,12 @@ class ValidacionesTest {
     }
 
     @Test
+    void soloAceptaCodigosNumericos() {
+        assertEquals("123",
+                Validaciones.leerCodigoNumerico(new Scanner("ABC\n12A\n123\n"), "Código: "));
+    }
+
+    @Test
     void permiteElegirLosTresEstadosDelProyecto() {
         assertEquals(EstadoProyecto.FINALIZADO,
                 Validaciones.leerEstadoProyecto(new Scanner("9\n3\n")));

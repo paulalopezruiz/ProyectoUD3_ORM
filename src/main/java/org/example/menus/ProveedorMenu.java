@@ -87,7 +87,7 @@ public class ProveedorMenu {
         System.out.println("| ALTA DE PROVEEDOR |");
 
         String codigo =
-                Validaciones.leerCodigoAlfanumerico(
+                Validaciones.leerCodigoNumerico(
                         scanner,
                         "Código: "
                 );
@@ -144,7 +144,7 @@ public class ProveedorMenu {
         System.out.println("| BAJA DE PROVEEDOR |");
 
         String codigo =
-                Validaciones.leerCodigoAlfanumerico(
+                Validaciones.leerCodigoNumerico(
                         scanner,
                         "Código del proveedor: "
                 );
@@ -194,7 +194,7 @@ public class ProveedorMenu {
         System.out.println("| MODIFICAR PROVEEDOR |");
 
         String codigo =
-                Validaciones.leerCodigoAlfanumerico(
+                Validaciones.leerCodigoNumerico(
                         scanner,
                         "Código del proveedor: ");
 
@@ -255,7 +255,7 @@ public class ProveedorMenu {
         System.out.println("| BUSCAR POR CÓDIGO |");
 
         String codigo =
-                Validaciones.leerCodigoAlfanumerico(
+                Validaciones.leerCodigoNumerico(
                         scanner,
                         "Código: ");
 
@@ -332,7 +332,7 @@ public class ProveedorMenu {
         System.out.println("| BUSCAR POR PIEZA SUMINISTRADA |");
 
         String codigo =
-                Validaciones.leerCodigoAlfanumerico(
+                Validaciones.leerCodigoNumerico(
                         scanner,
                         "Código de la pieza: "
                 );

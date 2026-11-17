@@ -2497,9 +2497,9 @@ public final class InterfazWeb implements AutoCloseable {
                         nombre
                 );
 
-        if (!codigo.matches("[A-Za-z0-9]+")) {
+        if (!codigo.matches("\\d+")) {
 
-            throw new IllegalArgumentException("El código solo puede contener letras y números.");
+            throw new IllegalArgumentException("El código solo puede contener números.");
         }
 
         return codigo;

@@ -27,7 +27,7 @@ public final class Validaciones {
         }
     }
 
-    public static String leerCodigoAlfanumerico(Scanner scanner, String etiqueta) {
+    public static String leerCodigoNumerico(Scanner scanner, String etiqueta) {
 
         while (true) {
 
@@ -42,11 +42,11 @@ public final class Validaciones {
                 continue;
             }
 
-            if (codigo.matches("[A-Za-z0-9]+")) {
+            if (codigo.matches("\\d+")) {
                 return codigo;
             }
 
-            System.out.println("El código solo puede contener letras y números."
+            System.out.println("El código solo puede contener números."
             );
         }
     }
